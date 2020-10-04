@@ -13,11 +13,10 @@ export default {
   /**
    *
    * @param {ConfigVuexState} _state
-   * @param {Error|Array<Error>} errors
+   * @param {Error} error
    */
-  [ConfigMutations.SET_ERRORS] (_state, errors) {
-    if (!Array.isArray(errors)) errors = [errors]
-    Vue.set(_state, 'errors', errors)
+  [ConfigMutations.SET_ERRORS] (_state, error) {
+    Vue.set(_state, 'error', error)
   },
   /**
    *

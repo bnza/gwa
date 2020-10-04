@@ -4,10 +4,6 @@ import { prop } from 'ramda'
 import { ClientMutations } from '@/common/constants/mutations'
 
 /**
- * @typedef {import('monet').Either} Either
- */
-
-/**
  * @typedef {import('axios').AxiosResponse} AxiosResponse
  */
 
@@ -36,7 +32,7 @@ export const request = ({ commit }, config) => {
  * @param commit
  * @return {Promise<Either<Error, AxiosResponse>>}
  */
-export const fetchConfig = ({ commit }) => {
+const fetchConfig = ({ commit }) => {
   /**
    * @type {axios}
    */

@@ -34,9 +34,9 @@ export default {
      * @return {Either<Error, any>|Either<Joi.ValidationError, ProjectConfigObject>}
      */
     const validate = /* @__PURE__ */ rawConfig => {
-      return Either.fromTry(() => {
-        return rawConfig.map(config => Joi.attempt(config, projectSchema, { abortEarly: false })).right()
-      })
+      const attempt = config => Joi.attempt(config, projectSchema, { abortEarly: false })
+      const attemptEither = config => Either.fromTry(() => attempt(config))
+      return rawConfig.flatMap(attemptEither)
     }
     /**
      *

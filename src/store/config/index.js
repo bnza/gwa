@@ -12,7 +12,7 @@ import actions from '@/store/config/actions'
 */
 const state = {
   raw: null,
-  errors: null,
+  error: null,
   valid: null
 }
 
