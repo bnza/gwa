@@ -1,0 +1,51 @@
+{
+  "title": "gwa",
+  "description": "The test client",
+  "pippo": [
+    {
+      "code": "26714",
+      "def": "+proj=utm +zone=14 +datum=NAD27 +units=m +no_defs "
+    }
+  ],
+  "view": {
+    "center": [-11560592.76, 5526675.11],
+    "zoom": 10
+  },
+  "servers": [
+    {
+      "baseUrl": "http://localhost:8585/geoserver"
+    }
+  ],
+  "layers": [
+    {
+      "type": "wfs",
+      "name": "topp:tasmania_cities"
+    },
+    {
+      "type": "wfs",
+      "name": "sf:restricted",
+      "style": {
+        "stroke": {
+          "color": "FF5733",
+          "width": 3
+        },
+        "fill": {
+          "color": "5E33FF"
+        }
+      }
+    },
+    {
+      "type": "wfs",
+      "name": "topp:states",
+      "style": {
+        "stroke": {
+          "color": "FF5733",
+          "width": 3
+        },
+        "fill": {
+          "color": "5E33FF"
+        }
+      }
+    }
+  ]
+}

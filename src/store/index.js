@@ -1,7 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import client from './client'
+import config from './config'
 
 Vue.use(Vuex)
+
+/**
+ * @typedef {Object} VuexRootState
+ * @property {ClientVuexState} client
+ */
 
 export default new Vuex.Store({
   state: {
@@ -11,5 +18,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    client,
+    config
   }
 })

@@ -13,6 +13,13 @@ export default {
   name: 'Home',
   components: {
     HelloWorld
+  },
+  created () {
+    const a = this.$store.dispatch('config/loadConfig').then(v => {
+      console.log(v)
+      return 2
+    })
+    return a
   }
 }
 </script>
