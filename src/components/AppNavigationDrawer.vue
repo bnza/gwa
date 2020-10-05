@@ -17,9 +17,7 @@
       </v-tabs>
       <v-tabs-items :value="currentTab">
         <v-tab-item>
-          <v-card flat>
-            <v-card-text>Layers data</v-card-text>
-          </v-card>
+          <app-drawer-layers-list />
         </v-tab-item>
         <v-tab-item>
           <v-card flat>
@@ -39,9 +37,13 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 import { SET_VISIBLE_TAB } from '@/store/components/AppNavigationDrawer'
+import AppDrawerLayersList from '@/components/AppDrawerLayersList'
 
 export default {
   name: 'AppNavigationDrawer',
+  components: {
+    AppDrawerLayersList
+  },
   computed: {
     ...mapState('components/AppNavigationDrawer', ['visible', 'visibleTab']),
     currentTab: {

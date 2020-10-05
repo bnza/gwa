@@ -11,6 +11,7 @@ import actions from './actions'
  *
  * @typedef {Object} LayersVuexState
  * @property {Object<string, LayerStoredState>} states
+ * @property {string} current
  */
 
 /**
@@ -18,7 +19,8 @@ import actions from './actions'
  * @type {LayersVuexState}
  */
 const state = {
-  states: {}
+  states: {},
+  current: null
 }
 
 export default {

@@ -33,11 +33,13 @@ export const ServerMutations = Object.freeze({
 export const SET_LAYER_STATE = 'setLayerState'
 export const SET_PROP = 'setProp'
 export const TOGGLE_PROP = 'toggleProp'
+export const SET_CURRENT = 'setCurrent'
 
 export const LayerMutations = Object.freeze({
   SET_LAYER_STATE,
   SET_PROP,
-  TOGGLE_PROP
+  TOGGLE_PROP,
+  SET_CURRENT
 })
 
 export const Mutations = Object.freeze({
