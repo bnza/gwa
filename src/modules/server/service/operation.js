@@ -1,5 +1,5 @@
 import { stringify } from 'qs'
-import { partialRight } from 'ramda'
+import { partialRight, mergeRight } from 'ramda'
 import { GET_CAPABILITIES } from '@/common/constants/operations'
 import { getServiceUrl } from '@/modules/server/service/index'
 /**
@@ -39,10 +39,11 @@ export const getServerServiceOperationUrl = (server, service, options) => {
  *
  * @param {ServerConfigObject} server
  * @param {Services} service
+ * @param {{[version]: string}} options
  * @return {AxiosRequestConfig}
  */
-export const getCapabilitiesOperationRequestConfig = (server, service) => {
+export const getCapabilitiesOperationRequestConfig = (server, service, options = {}) => {
   return {
-    url: getServerServiceOperationUrl(server, service, { request: GET_CAPABILITIES })
+    url: getServerServiceOperationUrl(server, service, mergeRight(options, { request: GET_CAPABILITIES }))
   }
 }

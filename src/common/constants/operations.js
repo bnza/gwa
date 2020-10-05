@@ -12,3 +12,7 @@ const WfsGetCapabilitiesRootElements = Object.freeze({
 export const GetCapabilitiesRootElements = Object.freeze({
   [Services.wfs]: WfsGetCapabilitiesRootElements
 })
+
+export const WfsOperations = Object.freeze({
+  GET_CAPABILITIES
+})
