@@ -16,7 +16,22 @@ export const ConfigMutations = Object.freeze({
   SET_ERRORS
 })
 
+export const SET_SERVER_CAPABILITIES = 'setServerCapabilities'
+export const SET_CAPABILITIES_XML = 'setCapabilitiesXxl'
+export const SET_CAPABILITIES_PARSED = 'setCapabilitiesParsed'
+
+export const CapabilitiesMutations = Object.freeze({
+  SET_SERVER_CAPABILITIES,
+  SET_CAPABILITIES_XML,
+  SET_CAPABILITIES_PARSED
+})
+
+export const ServerMutations = Object.freeze({
+  CapabilitiesMutations
+})
+
 export const Mutations = Object.freeze({
   ClientMutations,
-  ConfigMutations
+  ConfigMutations,
+  ServerMutations
 })

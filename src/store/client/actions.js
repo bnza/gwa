@@ -8,6 +8,10 @@ import { ClientMutations } from '@/common/constants/mutations'
  */
 
 /**
+ * @typedef {import('axios').AxiosError} AxiosError
+ */
+
+/**
  *
  * @param {Either<Error, AxiosResponse>} response
  * @return {*}
@@ -28,6 +32,15 @@ export const request = ({ commit }, config) => {
 }
 
 /**
+ * @param commit
+ * @param config
+ * @return {Promise<Either<Error, AxiosResponse>>}
+ */
+export const fetch = ({ commit }, config) => {
+  return request({ commit }, config).then(responseData)
+}
+
+/**
  *
  * @param commit
  * @return {Promise<Either<Error, AxiosResponse>>}
@@ -44,7 +57,7 @@ const fetchConfig = ({ commit }) => {
     }
   }
 
-  return request({ commit }, config).then(responseData)
+  return fetch({ commit }, config)
 }
 
 /**
@@ -52,5 +65,6 @@ const fetchConfig = ({ commit }) => {
  */
 export default {
   request,
+  fetch,
   fetchConfig
 }

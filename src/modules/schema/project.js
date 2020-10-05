@@ -159,10 +159,12 @@ const projectLayerGroupsSchema = Joi.array().items(projectLayerGroupSchema)
  * @property {string} title - The project title
  * @property {string} [description] - The project description
  * @property {string} [moreInfoUrl] - The project more info URL
- * @property {string} projection - The map data-projection: Projection of input/output plain coordinates in properties, events and etc.
+ * @property {string} dataProjection - The map data-projection: Projection of input/output plain coordinates in properties, events and etc.
+ * @property {Array<ProjectionSchemaObject>} projections,
  * @property {ViewConfigObject} view
  * @property {Array<ServerConfigObject>} servers
- * @property {Array<LayerConfigObject>} layers
+ * @property {Array<LayerConfigObject>} [layers]
+ * @property [groupLayers]
  */
 
 /**
