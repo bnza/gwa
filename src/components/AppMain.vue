@@ -1,18 +1,23 @@
 <template>
-  <app-config-manager />
+  <div>
+    <app-config-manager />
+    <app-bar />
+      <v-main>
+        <app-map />
+      </v-main>
+    <app-footer />
+  </div>
 </template>
 
 <script>
 import AppConfigManager from '@/components/AppConfigManager'
+import AppBar from '@/components/AppBar'
+import AppFooter from '@/components/AppFooter'
+import AppMap from '@/components/AppMap'
+
 export default {
   name: 'AppMain',
-  components: { AppConfigManager },
-  props: {
-    projectConfig: {
-      type: Object,
-      required: true
-    }
-  }
+  components: { AppBar, AppConfigManager, AppFooter, AppMap }
 }
 </script>
 
