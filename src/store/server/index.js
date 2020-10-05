@@ -1,12 +1,4 @@
 import capabilities from './capabilities'
-// const  server =  {
-//   services: {
-//     wfs: {
-//       operations: {},
-//       capabilities: {}
-//     }
-//   }
-// }
 const state = {
 
 }

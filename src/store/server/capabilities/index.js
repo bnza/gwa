@@ -9,7 +9,7 @@ import actions from './actions'
  */
 
 /**
- * @typedef {Object<string, Object>} ServerServicesCapabilities
+ * @typedef {Object<Services, ServerServiceCapabilities>} ServerServicesCapabilities
  */
 
 /**

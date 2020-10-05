@@ -1,8 +1,19 @@
 import xml2js from 'xml2js'
 import { Right, Left } from 'monet'
+import { head, keys, prop, toPairs, find, values } from 'ramda'
+import { GetCapabilitiesRootElements } from '@/common/constants/operations'
 /**
  * @typedef {import('monet').Either} Either
  */
+
+/**
+ * Returns the first object property key value
+ * @template A
+ * @param {Object<string,Array<A>>} object
+ * @param {string} key
+ * @return A
+ */
+export const headProp = (key, object) => head(prop(key, object))
 
 /**
  *
@@ -22,4 +33,38 @@ export const parseXml = xml => {
     capabilities = error ? Left(error) : Right(result)
   })
   return capabilities
+}
+
+export const getRoot = parsed => head(keys(parsed))
+
+export const getVersion = parsed => {
+  return prop('version', prop('$', prop(getRoot(parsed), parsed)))
+}
+
+/**
+ *
+ * @param parsed
+ * @return {string} - The GetCapabilities service
+ */
+export const getService = parsed => {
+  return head(
+    find(([, rootsObject]) => {
+      return find(
+        /**
+           * @param {string} root The root under test
+           * @return {boolean}
+           */
+        root => (new RegExp(getRoot(parsed))).test(root),
+        /**
+           * @type {Array<string>} The root elements name of the given service
+           */
+        values(rootsObject))
+    },
+    /**
+     * @type {Array}
+     * @property 0 {string} service
+     * @property 1 {Object<Versions,string>}
+     */
+    toPairs(GetCapabilitiesRootElements))
+  )
 }
