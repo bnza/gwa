@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import client from './client'
 import config from './config'
 import server from './server'
+import layers from './layers'
 import components from './components'
 
 Vue.use(Vuex)
@@ -23,6 +24,7 @@ export default new Vuex.Store({
     client,
     config,
     server,
+    layers,
     components
   }
 })
