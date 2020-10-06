@@ -16,6 +16,14 @@ const fetchServerServiceCapabilities = async ({ dispatch }, { server, service })
   return await dispatch('client/fetch', getCapabilitiesOperationRequestConfig(server, service), { root: true })
 }
 
+/**
+ *
+ * @param dispatch
+ * @param commit
+ * @param {ServerConfigObject} server
+ * @param {Services} service The service name
+ * @return {Promise<Either<Object>>}
+ */
 const loadServiceCapabilities = async ({ dispatch, commit }, { server, service }) => {
   /**
    * @param {string} xml

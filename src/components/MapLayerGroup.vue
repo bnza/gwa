@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { reverse } from 'ramda'
 import { mapGetters } from 'vuex'
 import MapLayerWfs from '@/components/MapLayerWfs'
 export default {
@@ -23,7 +24,7 @@ export default {
   computed: {
     ...mapGetters('config', ['getLayersByGroup']),
     members () {
-      return this.getLayersByGroup(this.group)
+      return reverse(this.getLayersByGroup(this.group))
     }
   },
   methods: {
