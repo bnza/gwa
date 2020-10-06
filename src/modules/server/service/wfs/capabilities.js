@@ -1,6 +1,7 @@
 import { map, head, prop, partial, concat, split, find, propEq } from 'ramda'
 import { headProp, getRoot, getVersion } from '@/modules/server/service/capabilities'
 import { WfsVersions } from '@/common/constants/server'
+import { stripCrsNamespace } from '@/modules/utils'
 
 /**
  *
@@ -89,7 +90,7 @@ const normalizeFeatureType100 = raw => {
     name: headProp('Name', raw),
     title: headProp('Title', raw),
     abstract: headProp('Abstract', raw),
-    projection: headProp('SRS', raw),
+    projection: stripCrsNamespace(headProp('SRS', raw)),
     extent: normalizeBbox100(headProp('LatLongBoundingBox', raw))
   }
 }
@@ -111,7 +112,7 @@ const normalizeFeatureType110 = raw => {
     name: headProp('Name', raw),
     title: headProp('Title', raw),
     abstract: headProp('Abstract', raw),
-    projection: headProp('DefaultSRS', raw),
+    projection: stripCrsNamespace(headProp('DefaultSRS', raw)),
     extent: normalizeBbox110(headProp('ows:WGS84BoundingBox', raw))
   }
 }
@@ -133,7 +134,7 @@ const normalizeFeatureType200 = raw => {
     name: headProp('Name', raw),
     title: headProp('Title', raw),
     abstract: headProp('Abstract', raw),
-    projection: headProp('DefaultCRS', raw),
+    projection: stripCrsNamespace(headProp('DefaultCRS', raw)),
     extent: normalizeBbox110(headProp('ows:WGS84BoundingBox', raw))
   }
 }
