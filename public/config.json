@@ -23,33 +23,7 @@
   "layers": [
     {
       "type": "wfs",
-      "name": "no:such"
-    },
-    {
-      "server": "wrong",
-      "type": "wfs",
-      "name": "topp:tasmania_cities"
-    },
-    {
-      "type": "wfs",
-      "name": "topp:tasmania_cities"
-    },
-    {
-      "type": "wfs",
       "name": "sf:restricted",
-      "style": {
-        "stroke": {
-          "color": "FF5733",
-          "width": 3
-        },
-        "fill": {
-          "color": "5E33FF"
-        }
-      }
-    },
-    {
-      "type": "wfs",
-      "name": "topp:states",
       "style": {
         "stroke": {
           "color": "FF5733",

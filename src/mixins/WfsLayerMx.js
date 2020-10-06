@@ -6,7 +6,7 @@ import { getFeatureTypeList, getFeatureType } from '@/modules/server/service/wfs
 export default {
   mixins: [LayerMx],
   computed: {
-    hasFeatureType () {
+    featureTypeReady () {
       return this.featureType.isRight()
     },
     featureType () {

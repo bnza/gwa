@@ -12,21 +12,14 @@ import { ClientMutations } from '@/common/constants/mutations'
  */
 
 /**
- *
- * @param {Either<Error, AxiosResponse>} response
- * @return {*}
- */
-const responseData = response => response.map(response => prop('data', response))
-
-/**
  * @param commit
  * @param config
  * @return {Promise<Either<Error, AxiosResponse>>}
  */
-export const request = ({ commit }, config) => {
+export const request = async ({ commit }, config) => {
   const key = Symbol('request')
   commit(ClientMutations.SET_REQUEST_PENDING, key)
-  return Either.fromPromise(
+  return await Either.fromPromise(
     axios.request(config).finally(() => commit(ClientMutations.SET_REQUEST_TERMINATED, key))
   )
 }
@@ -36,8 +29,8 @@ export const request = ({ commit }, config) => {
  * @param config
  * @return {Promise<Either<Error, AxiosResponse>>}
  */
-export const fetch = ({ commit }, config) => {
-  return request({ commit }, config).then(responseData)
+export const fetch = async ({ commit }, config) => {
+  return (await request({ commit }, config)).map(prop('data'))
 }
 
 /**
@@ -45,7 +38,7 @@ export const fetch = ({ commit }, config) => {
  * @param commit
  * @return {Promise<Either<Error, AxiosResponse>>}
  */
-const fetchConfig = ({ commit }) => {
+const fetchConfig = async ({ commit }) => {
   /**
    * @type {axios}
    */
@@ -57,7 +50,7 @@ const fetchConfig = ({ commit }) => {
     }
   }
 
-  return fetch({ commit }, config)
+  return await fetch({ commit }, config)
 }
 
 /**

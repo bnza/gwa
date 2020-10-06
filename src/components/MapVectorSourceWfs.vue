@@ -1,8 +1,9 @@
 <template>
     <vl-source-vector
       v-if="projectionReady"
-      :attributions="layer.config.attributions"
+      :attributions="data.config.attributions"
       :attributions-collapsible="true"
+      :loader="loader"
       :loading-strategy="loadingStrategy"
       :projection="projection"
     />
@@ -10,8 +11,13 @@
 
 <script>
 import { bbox } from 'ol/loadingstrategy'
+import { get as getProj } from 'ol/proj'
+import { registerProjection } from '@/modules/projections'
+import { always, prop } from 'ramda'
+import { mapActions } from 'vuex'
 import { Services } from '@/common/constants'
 import WfsLayerMx from '@/mixins/WfsLayerMx'
+import GetFeature from '@/modules/server/service/wfs/operations/GetFeature'
 
 export default {
   name: 'MapVectorSourceWfs',
@@ -31,6 +37,40 @@ export default {
   computed: {
     loadingStrategy () {
       return bbox
+    },
+    projection () {
+      return this.featureType.cata(always(''), prop('projection'))
+    }
+  },
+  methods: {
+    ...mapActions('client', ['fetch']),
+    async loader () {
+      const options = {
+        typename: this.data.config.name,
+        version: this.service.version
+      }
+      if (this.projection !== this.dataProjection) {
+        options.srsName = this.dataProjection
+      }
+      const data = await this.fetch(
+        GetFeature.getRequestConfig(this.data.server.config, options)
+      )
+      return data.right()
+    }
+  },
+  watch: {
+    projection: {
+      handler: async function (code) {
+        if (!code) {
+          this.projectionReady = false
+          return
+        }
+        if (!getProj(code)) {
+          await registerProjection({ code }, this.fetch)
+        }
+        this.projectionReady = true
+      },
+      immediate: true
     }
   }
 }

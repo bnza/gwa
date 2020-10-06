@@ -13,6 +13,9 @@ export default {
     },
     service () {
       return this.data.server.services[this.config.type]
+    },
+    serviceReady () {
+      return this.service.capabilities.isRight()
     }
   }
 }
