@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Maybe } from 'monet'
+import { Left } from 'monet'
 import { CapabilitiesMutations } from '@/common/constants/mutations'
 import { Services } from '@/common/constants'
 
@@ -34,11 +34,11 @@ export default {
    */
   [CapabilitiesMutations.SET_SERVER_CAPABILITIES] (_state, name) {
     if (!Object.prototype.hasOwnProperty.call(_state, name)) {
-      _state[name] = {}
+      Vue.set(_state, name, {})
       Object.keys(Services).forEach(serviceName => {
-        _state[name][serviceName] = {
-          parsed: Maybe.fromNull(null)
-        }
+        Vue.set(_state[name], serviceName, {
+          parsed: Left('Not set')
+        })
       })
     }
   },

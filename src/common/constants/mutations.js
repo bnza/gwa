@@ -17,11 +17,13 @@ export const ConfigMutations = Object.freeze({
 })
 
 export const SET_SERVER_CAPABILITIES = 'setServerCapabilities'
+export const SET_SERVICE_CAPABILITIES = 'setServiceCapabilities'
 export const SET_CAPABILITIES_XML = 'setCapabilitiesXxl'
 export const SET_CAPABILITIES_PARSED = 'setCapabilitiesParsed'
 
 export const CapabilitiesMutations = Object.freeze({
   SET_SERVER_CAPABILITIES,
+  SET_SERVICE_CAPABILITIES,
   SET_CAPABILITIES_XML,
   SET_CAPABILITIES_PARSED
 })

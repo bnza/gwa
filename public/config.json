@@ -14,9 +14,22 @@
   "servers": [
     {
       "baseUrl": "http://localhost:8585/geoserver"
+    },
+    {
+      "name": "wrong",
+      "baseUrl": "http://localhost:8586/geoserver"
     }
   ],
   "layers": [
+    {
+      "type": "wfs",
+      "name": "no:such"
+    },
+    {
+      "server": "wrong",
+      "type": "wfs",
+      "name": "topp:tasmania_cities"
+    },
     {
       "type": "wfs",
       "name": "topp:tasmania_cities"

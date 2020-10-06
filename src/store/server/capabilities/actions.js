@@ -1,8 +1,9 @@
-import { keys, forEach, partial, compose } from 'ramda'
+import { Either, Left } from 'monet'
+import { keys, forEach, partial } from 'ramda'
 import { Services } from '@/common/constants'
 import { CapabilitiesMutations } from '@/common/constants/mutations'
 import { getCapabilitiesOperationRequestConfig } from '@/modules/server/service/operation'
-import { parseXmlEither } from '@/modules/server/service/capabilities'
+import { parseXml } from '@/modules/server/service/capabilities'
 
 /**
  *
@@ -24,8 +25,17 @@ export default {
    */
   loadServerCapabilities ({ dispatch, commit }, { server }) {
     commit(CapabilitiesMutations.SET_SERVER_CAPABILITIES, server.name)
+    const commitLeft = (service, error) => {
+      const left = Left(error)
+      commit(CapabilitiesMutations.SET_CAPABILITIES_PARSED, {
+        name: server.name,
+        service,
+        parsed: left
+      })
+      return left
+    }
     /**
-     * @param {string} service
+     * @param {Services} service
      * @param {string} xml
      * @return {string}
      */
@@ -38,7 +48,7 @@ export default {
       return xml
     }
     /**
-     * @param {string} service
+     * @param {Services} service
      * @param {Object} parsed
      * @return {void}
      */
@@ -52,19 +62,24 @@ export default {
 
     /**
      * Fetch service capabilities, parses XML and commit both XML and parsed
-     * @param {string }service
+     * @param {Services }service
      */
     const fetchCapabilities = service => {
-      const loadCapabilities = compose(
-        partial(commitParsed, [service]),
-        parseXmlEither,
-        partial(commitXml, [service])
-      )
+      const loadCapabilities = xml => {
+        commitXml(service, xml)
+        Either.fromTry(() => parseXml(xml)).map(partial(commitParsed, [service]))
+      }
       fetchServerServiceCapabilities(
         { dispatch }, {
           server,
           service
-        }).then(loadCapabilities)
+        }).then(
+        response => response.map(
+          loadCapabilities
+        ).catchMap(
+          partial(commitLeft, [service])
+        )
+      )
     }
     forEach(fetchCapabilities, keys(Services))
   },

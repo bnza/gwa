@@ -1,9 +1,29 @@
+/**
+ * @typedef {Object} LayerData
+ * @property {LayerConfigObject} config
+ * @property {ServerData} server
+ */
 
 export default {
   configs: (state, getters, rootState) => {
     return rootState.config.valid.layers
   },
   getConfig: (state, getters) => id => getters.configs.find(layerConfig => layerConfig.id === id),
+  /**
+   *
+   * @param state
+   * @param getters
+   * @param rootState
+   * @param rootGetters
+   * @return {function(config:LayerConfigObject): LayerData}
+   */
+  get: (state, getters, rootState, rootGetters) => config => {
+    return {
+      state: state.states[config.id],
+      config,
+      server: rootGetters['server/get'](config.server)
+    }
+  },
   /**
    *
    * @param {LayersVuexState} state

@@ -13,15 +13,21 @@
     <vl-layer-tile id="osm">
       <vl-source-osm />
     </vl-layer-tile>
+    <map-layer-group id="default" />
   </vl-map>
 </template>
 
 <script>
 import { getMapIntPixelHeight } from '@/modules/utils'
 import ProjectConfigMx from '@/mixins/ProjectConfigMx'
+import MapLayerGroup from '@/components/MapLayerGroup'
+
 export default {
   name: 'AppMap',
   mixins: [ProjectConfigMx],
+  components: {
+    MapLayerGroup
+  },
   data () {
     return {
       height: 400,

@@ -1,4 +1,4 @@
-import { map, head, prop, partial, concat, split } from 'ramda'
+import { map, head, prop, partial, concat, split, find, propEq } from 'ramda'
 import { headProp, getRoot, getVersion } from '@/modules/server/service/capabilities'
 import { WfsVersions } from '@/common/constants/server'
 
@@ -138,7 +138,13 @@ const normalizeFeatureType200 = raw => {
   }
 }
 
-const getFeatureType = (version, raw) => {
+/**
+ *
+ * @param {WfsVersions} version
+ * @param {WfsBaseCapabilitiesFeatureConfigObject} raw
+ * @return {WfsCapabilitiesFeatureTypeConfigObject}
+ */
+const normalizeFeatureType = (version, raw) => {
   const normalizers = {
     [WfsVersions.v100]: normalizeFeatureType100,
     [WfsVersions.v110]: normalizeFeatureType110,
@@ -147,8 +153,27 @@ const getFeatureType = (version, raw) => {
   return normalizers[version](raw)
 }
 
+/**
+ *
+ * @param {WfsBaseCapabilitiesFeatureConfigObject} parsed
+ * @return {Array<WfsCapabilitiesFeatureTypeConfigObject>}
+ */
 export const getFeatureTypeList = parsed => {
   const raws = getRawFeatureTypeList(parsed)
   const version = getVersion(parsed)
-  return map(partial(getFeatureType, [version]), raws)
+  return map(partial(normalizeFeatureType, [version]), raws)
+}
+
+/**
+ *
+ * @param {WfsBaseCapabilitiesFeatureConfigObject} featureTypeList
+ * @param {string} name - The typename
+ * @return {Either<string,WfsCapabilitiesFeatureTypeConfigObject>}
+ */
+export const getFeatureType = (name, featureTypeList) => {
+  const featureType = find(propEq('name', name))(featureTypeList)
+  if (!featureType) {
+    throw new Error(`No such typename ${name}`)
+  }
+  return featureType
 }

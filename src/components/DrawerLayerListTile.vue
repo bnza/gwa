@@ -1,37 +1,31 @@
 <template>
   <v-list-item
-    :class="{ current: isCurrentLayer(layer.id) }"
+    :class="{ current: isCurrentLayer(config.id) }"
   >
     <v-list-item-action>
       <v-checkbox v-model="visible"></v-checkbox>
     </v-list-item-action>
     <v-list-item-content
-      @click="setCurrentLayer(layer.id)"
+      @click="setCurrentLayer(config.id)"
     >
-      <v-list-item-title v-text="layer.label"></v-list-item-title>
+      <v-list-item-title v-text="config.label"></v-list-item-title>
     </v-list-item-content>
   </v-list-item>
 </template>
 
 <script>
-import LayersStoreMx from '@/mixins/LayersStoreMx'
+import LayerMx from '@/mixins/LayerMx'
 
 export default {
   name: 'DrawerLayerListTile',
-  mixins: [LayersStoreMx],
-  props: {
-    layer: {
-      type: Object,
-      required: true
-    }
-  },
+  mixins: [LayerMx],
   computed: {
     visible: {
       get () {
-        return this.getLayerProp(this.layer.id, 'visible')
+        return this.getLayerProp(this.config.id, 'visible')
       },
       set (value) {
-        this.setLayerProp({ id: this.layer.id, key: 'visible', value })
+        this.setLayerProp({ id: this.config.id, key: 'visible', value })
       }
     }
   }

@@ -1,9 +1,9 @@
 <template>
   <v-card flat>
     <drawer-layer-list-tile
-      v-for="layer of layersConfigs"
-      :layer="layer"
-      :key="layer.id"
+      v-for="layerConfig of layersConfigs"
+      :config="layerConfig"
+      :key="layerConfig.id"
     />
   </v-card>
 </template>

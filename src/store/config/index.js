@@ -1,3 +1,4 @@
+import getters from '@/store/config/getters'
 import mutations from '@/store/config/mutations'
 import actions from '@/store/config/actions'
 /**
@@ -20,6 +21,7 @@ export default {
   strict: true,
   namespaced: true,
   state,
+  getters,
   mutations,
   actions
 }

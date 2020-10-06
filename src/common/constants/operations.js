@@ -13,6 +13,9 @@ export const GetCapabilitiesRootElements = Object.freeze({
   [Services.wfs]: WfsGetCapabilitiesRootElements
 })
 
+export const GET_FEATURE = 'GetFeature'
+
 export const WfsOperations = Object.freeze({
-  GET_CAPABILITIES
+  GET_CAPABILITIES,
+  GET_FEATURE
 })

@@ -4,6 +4,7 @@ import { LayerMutations } from '@/common/constants/mutations'
 export default {
   computed: {
     ...mapGetters('layers', {
+      getLayerData: 'get',
       layersConfigs: 'configs',
       getLayerProp: 'getProp',
       isCurrentLayer: 'isCurrent'
@@ -15,5 +16,4 @@ export default {
       setLayerProp: LayerMutations.SET_PROP
     })
   }
-
 }
