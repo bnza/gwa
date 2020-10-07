@@ -1,3 +1,5 @@
+import { has } from 'ramda'
+import { Either } from 'monet'
 import { Services } from '@/common/constants'
 
 export default {
@@ -9,15 +11,18 @@ export default {
   /**
    *
    * @param {ServerCapabilitiesVuexState} state
-   * @return {function(name:string, service:Services): Object}
+   * @return {function(name:string, service:Services): Either<Object>}
    */
-  getServerServicesCapabilities: (state) => (name, service) => {
-    if (!Object.prototype.hasOwnProperty.call(state, name)) {
-      throw new Error(`No such server ${name}`)
+  get: (state) => (name, service) => {
+    if (!has(service, Services)) {
+      return Either.left(`No such service ${name}`)
     }
-    if (!Object.prototype.hasOwnProperty.call(Services, service)) {
-      throw new Error(`No such server service ${name}`)
+    if (!has(name, state)) {
+      return Either.left(`No such server ${name}`)
     }
-    return state[name][service].parsed
+    if (!has(service, state[name])) {
+      return Either.left(`No such server service ${name}`)
+    }
+    return state[name][service]
   }
 }

@@ -1,9 +1,11 @@
 import { Services } from '@/common/constants'
-import { forEach, values, lensProp, set } from 'ramda'
+import { forEach, values } from 'ramda'
+import { getVersion } from '@/modules/server/service/capabilities'
 
 /**
  * @typedef {Object} ServerService
- * @property {Either<Error,Object>} capabilities
+ * @property {string} version
+ * @property {Either<any,Object>} capabilities
  */
 
 /**
@@ -30,7 +32,10 @@ export default {
    */
   getService: (state, getters, rootState, rootGetters) => (serverName, serviceName) => {
     return {
-      capabilities: rootGetters['server/capabilities/getServerServicesCapabilities'](serverName, serviceName)
+      get version () {
+        return this.capabilities.cata(() => '', getVersion)
+      },
+      capabilities: rootGetters['server/capabilities/get'](serverName, serviceName)
     }
   },
   /**
@@ -47,11 +52,7 @@ export default {
     forEach(
       serviceName => {
         services[serviceName] = Object.freeze(
-          set(
-            lensProp('version'),
-            config.services[serviceName].version,
-            getters.getService(name, serviceName)
-          )
+          getters.getService(name, serviceName)
         )
       },
       values(Services)

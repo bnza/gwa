@@ -1,4 +1,3 @@
-import { Left } from 'monet'
 import { keys, forEach } from 'ramda'
 import { Services } from '@/common/constants'
 import { CapabilitiesMutations } from '@/common/constants/mutations'
@@ -22,47 +21,23 @@ const fetchServerServiceCapabilities = async ({ dispatch }, { server, service })
  * @param commit
  * @param {ServerConfigObject} server
  * @param {Services} service The service name
- * @return {Promise<Either<Object>>}
+ * @return {Either<Object>}
  */
 const loadServiceCapabilities = async ({ dispatch, commit }, { server, service }) => {
   /**
-   * @param {string} xml
-   * @return {string}
+   * @param {Object} either
+   * @return {Either<*,Object>}
    */
-  const commitXml = xml => {
-    commit(CapabilitiesMutations.SET_CAPABILITIES_XML, {
+  const commitCapabilities = either => {
+    commit(CapabilitiesMutations.SET_SERVICE_CAPABILITIES, {
       name: server.name,
       service,
-      xml
+      either
     })
-    return xml
-  }
-  /**
-   * @param {Object} parsed
-   * @return {Object}
-   */
-  const commitParsed = parsed => {
-    commit(CapabilitiesMutations.SET_CAPABILITIES_PARSED, {
-      name: server.name,
-      service,
-      parsed
-    })
-    return parsed
-  }
-  const commitLeft = error => {
-    const left = Left(error)
-    commit(CapabilitiesMutations.SET_CAPABILITIES_PARSED, {
-      name: server.name,
-      service,
-      parsed: left
-    })
-    return left
+    return either
   }
   const capabilities = await fetchServerServiceCapabilities({ dispatch }, { server, service })
-  return capabilities
-    .map(commitXml).catchMap(commitLeft)
-    .map(parseXml)
-    .map(commitParsed).catchMap(commitLeft)
+  return commitCapabilities(capabilities.flatMap(parseXml))
 }
 
 export default {

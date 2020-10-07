@@ -47,21 +47,10 @@ export default {
    * @param {ServerCapabilitiesVuexState} _state
    * @param {string} name - The serve name
    * @param {string} service - The service name
-   * @param {Either<AxiosError, string>} xml - The raw xml GetCapabilities response
+   * @param {Either<*,Object>} parsed - The parsed GetCapabilities object
    */
-  [CapabilitiesMutations.SET_CAPABILITIES_XML] (_state, { name, service, xml }) {
+  [CapabilitiesMutations.SET_SERVICE_CAPABILITIES] (_state, { name, service, either }) {
     checkServerService(_state, name, service)
-    Vue.set(_state[name][service], 'xml', xml)
-  },
-  /**
-   *
-   * @param {ServerCapabilitiesVuexState} _state
-   * @param {string} name - The serve name
-   * @param {string} service - The service name
-   * @param {Maybe<Object>} parsed - The parsed GetCapabilities object
-   */
-  [CapabilitiesMutations.SET_CAPABILITIES_PARSED] (_state, { name, service, parsed }) {
-    checkServerService(_state, name, service)
-    Vue.set(_state[name][service], 'parsed', parsed)
+    Vue.set(_state[name], service, either)
   }
 }
