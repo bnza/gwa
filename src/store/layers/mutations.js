@@ -11,6 +11,9 @@ export default {
   [LayerMutations.SET_LAYER_STATE] (state, { id, layerState }) {
     Vue.set(state.states, id, layerState)
   },
+  [LayerMutations.SET_TYPE] (state, { id, type }) {
+    Vue.set(state.types, id, type)
+  },
   [LayerMutations.SET_PROP] (state, { id, key, value }) {
     if (!Object.prototype.hasOwnProperty.call(state.states, id)) {
       throw new Error(`No such layer "${id}"`)

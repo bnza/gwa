@@ -8,8 +8,9 @@ export default {
   },
   render: () => null,
   created () {
-    this.$store.dispatch('server/capabilities/loadServersCapabilities')
-    this.$store.dispatch('layers/loadConfigLayers')
+    this.$store.dispatch('server/capabilities/loadServersCapabilities').then(
+      () => this.$store.dispatch('layers/loadConfigLayers')
+    )
   }
 }
 </script>

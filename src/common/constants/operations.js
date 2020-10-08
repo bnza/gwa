@@ -14,8 +14,10 @@ export const GetCapabilitiesRootElements = Object.freeze({
 })
 
 export const GET_FEATURE = 'GetFeature'
+export const DESCRIBE_FEATURE_TYPE = 'DescribeFeatureType'
 
 export const WfsOperations = Object.freeze({
   GET_CAPABILITIES,
-  GET_FEATURE
+  GET_FEATURE,
+  DESCRIBE_FEATURE_TYPE
 })

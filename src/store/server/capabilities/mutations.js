@@ -36,9 +36,7 @@ export default {
     if (!Object.prototype.hasOwnProperty.call(_state, name)) {
       Vue.set(_state, name, {})
       Object.keys(Services).forEach(serviceName => {
-        Vue.set(_state[name], serviceName, {
-          parsed: Left('Not set')
-        })
+        Vue.set(_state[name], serviceName, Left('Not set'))
       })
     }
   },

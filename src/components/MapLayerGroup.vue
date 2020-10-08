@@ -22,9 +22,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('config', ['getLayersByGroup']),
+    ...mapGetters('layers', ['getReadyLayerConfigsByGroup']),
     members () {
-      return reverse(this.getLayersByGroup(this.group))
+      return reverse(this.getReadyLayerConfigsByGroup(this.group))
     }
   },
   methods: {

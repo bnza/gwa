@@ -1,7 +1,7 @@
 <template>
   <v-card flat>
     <drawer-layer-list-tile
-      v-for="layerConfig of layersConfigs"
+      v-for="layerConfig in defaultGroupMembers"
       :config="layerConfig"
       :key="layerConfig.id"
     />
@@ -17,6 +17,11 @@ export default {
   mixins: [LayersStoreMx],
   components: {
     DrawerLayerListTile
+  },
+  computed: {
+    defaultGroupMembers () {
+      return this.getReadyLayerConfigsByGroup('default')
+    }
   }
 }
 </script>

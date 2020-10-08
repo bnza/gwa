@@ -11,6 +11,7 @@ import actions from './actions'
  *
  * @typedef {Object} LayersVuexState
  * @property {Object<string, LayerStoredState>} states
+ * @property {Object<string, Either<AxiosResponseError,Object>>} types - DescribeFeatureType json response
  * @property {string} current
  */
 
@@ -20,6 +21,7 @@ import actions from './actions'
  */
 const state = {
   states: {},
+  types: {},
   current: null
 }
 

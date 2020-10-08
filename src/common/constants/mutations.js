@@ -32,12 +32,14 @@ export const SET_LAYER_STATE = 'setLayerState'
 export const SET_PROP = 'setProp'
 export const TOGGLE_PROP = 'toggleProp'
 export const SET_CURRENT = 'setCurrent'
+export const SET_TYPE = 'setType'
 
 export const LayerMutations = Object.freeze({
   SET_LAYER_STATE,
   SET_PROP,
   TOGGLE_PROP,
-  SET_CURRENT
+  SET_CURRENT,
+  SET_TYPE
 })
 
 export const Mutations = Object.freeze({

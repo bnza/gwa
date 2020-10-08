@@ -7,7 +7,8 @@ export default {
       getLayerData: 'get',
       layersConfigs: 'configs',
       getLayerProp: 'getProp',
-      isCurrentLayer: 'isCurrent'
+      isCurrentLayer: 'isCurrent',
+      getReadyLayerConfigsByGroup: 'getReadyLayerConfigsByGroup'
     })
   },
   methods: {

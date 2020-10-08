@@ -1,4 +1,4 @@
-import { keys, forEach } from 'ramda'
+import { keys, map } from 'ramda'
 import { Services } from '@/common/constants'
 import { CapabilitiesMutations } from '@/common/constants/mutations'
 import { getCapabilitiesOperationRequestConfig } from '@/modules/server/service/operation'
@@ -49,7 +49,7 @@ export default {
       )
     )
   },
-  loadServersCapabilities ({ dispatch, rootState }) {
-    forEach(server => dispatch('loadServicesCapabilities', server), rootState.config.valid.servers)
+  async loadServersCapabilities ({ dispatch, rootState }) {
+    await Promise.all(map(server => dispatch('loadServicesCapabilities', server), rootState.config.valid.servers))
   }
 }

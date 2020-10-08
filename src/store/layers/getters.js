@@ -1,3 +1,5 @@
+import { filter, map, keys, find } from 'ramda'
+
 /**
  * @typedef {Object} LayerData
  * @property {LayerConfigObject} config
@@ -37,6 +39,22 @@ export default {
       throw new Error(`No such layer property ${key}`)
     }
     return state.states[id][key]
+  },
+  /**
+   *
+   * @param state
+   * @param getters
+   * @param rootState
+   * @param rootGetters
+   * @return {function(groupName:string): Array<LayerConfigObject>}
+   */
+  getReadyLayerConfigsByGroup: (state, getters, rootState, rootGetters) => groupName => {
+    const groupLayers = rootGetters['config/getLayersByGroup'](groupName)
+    const readyLayersIds = filter(
+      id => find(layer => layer.id === id, groupLayers),
+      keys(state.states)
+    )
+    return map(id => getters.getConfig(id), readyLayersIds)
   },
   /**
    *

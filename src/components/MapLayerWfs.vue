@@ -1,6 +1,6 @@
 <template>
-  <vl-layer-vector :visible="data.state.visible">
-    <map-vector-source-wfs v-if="featureTypeReady" :config="config" />
+  <vl-layer-vector v-if="featureTypeReady" :visible="data.state.visible">
+    <map-vector-source-wfs :config="config" />
     <map-layer-style-wfs :style-config="data.config.style" />
   </vl-layer-vector>
 </template>

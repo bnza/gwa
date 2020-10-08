@@ -1,4 +1,5 @@
 import { map, head, prop, partial, concat, split, find, propEq } from 'ramda'
+import { Either } from 'monet'
 import { headProp, getRoot, getVersion } from '@/modules/server/service/capabilities'
 import { WfsVersions } from '@/common/constants/server'
 import { stripCrsNamespace } from '@/modules/utils'
@@ -174,7 +175,7 @@ export const getFeatureTypeList = parsed => {
 export const getFeatureType = (name, featureTypeList) => {
   const featureType = find(propEq('name', name))(featureTypeList)
   if (!featureType) {
-    throw new Error(`No such typename ${name}`)
+    return Either.left(`No such typename ${name}`)
   }
-  return featureType
+  return Either.of(featureType)
 }
