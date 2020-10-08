@@ -41,8 +41,8 @@ const wfsOptionsNormalizer = options => {
     version: options.version,
     srsName: options.srsName,
     outputFormat: 'application/json',
-    exceptions: 'application/json'
-
+    exceptions: 'application/json',
+    cql_filter: options.cql_filter
   }
 }
 

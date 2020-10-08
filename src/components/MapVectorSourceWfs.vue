@@ -10,18 +10,20 @@
 </template>
 
 <script>
-import { bbox } from 'ol/loadingstrategy'
+import { WFS } from 'ol/format'
+import { bbox as bboxFilter } from 'ol/format/filter'
+import { bbox as bboxStrategy } from 'ol/loadingstrategy'
 import { get as getProj } from 'ol/proj'
 import { registerProjection } from '@/modules/projections'
-import { always, prop } from 'ramda'
+import { always, prop, identity } from 'ramda'
 import { mapActions } from 'vuex'
 import { Services } from '@/common/constants'
 import WfsLayerMx from '@/mixins/WfsLayerMx'
-import GetFeature from '@/modules/server/service/wfs/operations/GetFeature'
+import ProjectConfigMx from '@/mixins/ProjectConfigMx'
 
 export default {
   name: 'MapVectorSourceWfs',
-  mixins: [WfsLayerMx],
+  mixins: [WfsLayerMx, ProjectConfigMx],
   props: {
     config: {
       type: Object,
@@ -31,12 +33,13 @@ export default {
   },
   data () {
     return {
-      projectionReady: false
+      projectionReady: false,
+      wfsFormat: null
     }
   },
   computed: {
     loadingStrategy () {
-      return bbox
+      return bboxStrategy
     },
     projection () {
       return this.featureType.cata(always(''), prop('projection'))
@@ -44,18 +47,23 @@ export default {
   },
   methods: {
     ...mapActions('client', ['fetch']),
-    async loader () {
-      const options = {
-        typename: this.data.config.name,
-        version: this.service.version
-      }
-      if (this.projection !== this.dataProjection) {
-        options.srsName = this.dataProjection
-      }
+    async loader (extent, projection, resolution) {
+      const [ns, name] = this.data.config.name.split(':')
+      const featureRequest = this.wfsFormat.writeGetFeature({
+        featurePrefix: ns,
+        featureTypes: [name],
+        outputFormat: 'application/json',
+        filter: bboxFilter('the_geom', extent, this.projection)
+      })
       const data = await this.fetch(
-        GetFeature.getRequestConfig(this.data.server.config, options)
+        {
+          method: 'post',
+          headers: { 'Content-Type': 'text/xml' },
+          url: `${this.data.server.config.baseUrl}wfs`,
+          data: new XMLSerializer().serializeToString(featureRequest)
+        }
       )
-      return data.right()
+      return data.cata(() => {}, identity)
     }
   },
   watch: {
@@ -72,10 +80,9 @@ export default {
       },
       immediate: true
     }
+  },
+  created () {
+    this.wfsFormat = new WFS()
   }
 }
 </script>
-
-<style scoped>
-
-</style>
