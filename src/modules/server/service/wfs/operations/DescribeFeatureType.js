@@ -3,6 +3,36 @@ import { WfsOperations } from '@/common/constants/operations'
 import { Services } from '@/common/constants'
 import { mergeRight } from 'ramda'
 import { WfsVersions } from '@/common/constants/server'
+/**
+ * @typedef {Object} WfsDescribeFeatureTypeProperties
+ * @property {string} name
+ * @property {number} maxOccurs
+ * @property {number} minOccurs
+ * @property {boolean} nillable
+ * @property {string} type
+ * @property {string} localType
+ */
+
+/**
+ * @typedef {Object} WfsDescribeFeatureTypeRawResponseFeatureType
+ * @property {string} typename
+ * @property {Array<WfsDescribeFeatureTypeProperties>} properties
+ */
+
+/**
+ * @typedef {Object} WfsDescribeFeatureTypeRawResponse
+ * @property {string} elementFormDefault
+ * @property {string} targetNamespace
+ * @property {string} targetPrefix
+ * @property {Array<WfsDescribeFeatureTypeRawResponseFeatureType>} featureTypes
+ */
+
+/**
+ * @typedef {Object} WfsDescribeFeatureTypeResponse
+ * @property {string} elementFormDefault
+ * @property {string} targetNamespace
+ * @property {Array<WfsDescribeFeatureTypeProperties>} properties
+ */
 
 /**
  * @typedef {BaseOperationOptions} WfsDescribeFeatureTypeRequestParametersObject
@@ -76,14 +106,26 @@ export default Object.freeze({
    * @param {WfsDescribeFeatureTypeOperationOptions} options
    * @return {AxiosRequestConfig}
    */
-  getRequestConfig:
-    (server, options) => {
-      // TODO check version
-      return {
-        url: getServerServiceOperationUrl(server, Services.wfs, mergeRight(
-          normalizers[options.version](options),
-          wfsOptionsNormalizer(options)
-        ))
-      }
+  getRequestConfig: (server, options) => {
+    // TODO check version
+    return {
+      url: getServerServiceOperationUrl(server, Services.wfs, mergeRight(
+        normalizers[options.version](options),
+        wfsOptionsNormalizer(options)
+      ))
     }
+  },
+  /**
+   *
+   * @param {WfsDescribeFeatureTypeRawResponse} responseObject
+   * @return {WfsDescribeFeatureTypeResponse}
+   */
+  normalizeResponse: responseObject => {
+    return {
+      elementFormDefault: responseObject.elementFormDefault,
+      targetNamespace: responseObject.targetNamespace,
+      properties: responseObject.featureTypes[0].properties
+    }
+  }
+
 })

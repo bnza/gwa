@@ -17,7 +17,9 @@ const fetchFeatureType = async ({ dispatch, rootGetters }, layerConfig) => {
     ),
     { root: true }
   )
-  return await featureType.flatMap(fetchFeatureType)
+  const a = await featureType.flatMap(fetchFeatureType)
+  const b = a.map(DescribeFeatureType.normalizeResponse)
+  return b
 }
 
 export default {
