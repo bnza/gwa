@@ -17,9 +17,7 @@ const fetchFeatureType = async ({ dispatch, rootGetters }, layerConfig) => {
     ),
     { root: true }
   )
-  const a = await featureType.flatMap(fetchFeatureType)
-  const b = a.map(DescribeFeatureType.normalizeResponse)
-  return b
+  return (await featureType.flatMap(fetchFeatureType)).map(DescribeFeatureType.normalizeResponse)
 }
 
 export default {
@@ -31,7 +29,14 @@ export default {
    * @param {LayerConfigObject} layerConfig
    */
   async loadLayer ({ commit, dispatch, rootGetters }, layerConfig) {
-    commit(LayerMutations.SET_LAYER_STATE, { id: layerConfig.id, layerState: { visible: layerConfig.visible } })
+    commit(
+      LayerMutations.SET_LAYER_STATE,
+      {
+        id: layerConfig.id,
+        layerState: {
+          visible: layerConfig.visible
+        }
+      })
     const type = await fetchFeatureType({ dispatch, rootGetters }, layerConfig)
     if (layerConfig.type === Services.wfs) {
       commit(LayerMutations.SET_TYPE, {

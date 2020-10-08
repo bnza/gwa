@@ -3,10 +3,23 @@
     :class="{ current: isCurrentLayer(config.id) }"
   >
     <v-list-item-action>
-      <v-checkbox v-model="visible"></v-checkbox>
+      <drawer-layer-list-item-visible-action :status.sync="status" :config="config" />
+      <v-checkbox v-if="status.isRight()" v-model="visible"></v-checkbox>
+      <v-tooltip v-else bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon
+            color="yellow darken-2"
+            v-bind="attrs"
+            v-on="on"
+          >
+            report_problem
+          </v-icon>
+        </template>
+        <span>{{status.left()}}</span>
+      </v-tooltip>
     </v-list-item-action>
     <v-list-item-content
-      @click="setCurrentLayer(config.id)"
+      @click="status.isLeft() || setCurrentLayer(config.id)"
     >
       <v-list-item-title v-text="config.label"></v-list-item-title>
     </v-list-item-content>
@@ -14,11 +27,19 @@
 </template>
 
 <script>
+import { Either } from 'monet'
+import DrawerLayerListItemVisibleAction from '@/components/DrawerLayerListItemVisibleAction'
 import LayerMx from '@/mixins/LayerMx'
 
 export default {
   name: 'DrawerLayerListTile',
+  components: { DrawerLayerListItemVisibleAction },
   mixins: [LayerMx],
+  data () {
+    return {
+      status: Either.left('Not ready')
+    }
+  },
   computed: {
     visible: {
       get () {
