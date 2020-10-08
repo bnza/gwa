@@ -1,20 +1,22 @@
 <script>
+import { Either } from 'monet'
 import { mapGetters } from 'vuex'
 export default {
-  name: 'DrawerLayerListItemAction',
+  name: 'DrawerLayerListItemVisibleActionWfs',
   props: {
     status: {
+      type: Either.fn.init,
       required: true
     },
-    config: {
-      type: Object,
+    id: {
+      type: String,
       required: true
     }
   },
   computed: {
     ...mapGetters('layers', ['getType']),
     featureType () {
-      return this.getType(this.config.id)
+      return this.getType(this.id)
     }
   },
   render: () => null,
@@ -22,8 +24,7 @@ export default {
     featureType: {
       handler (either) {
         this.$emit('update:status', either)
-      },
-      immediate: true
+      }
     }
   }
 }

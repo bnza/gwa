@@ -1,5 +1,5 @@
 <template>
-  <component :is="component" :status.sync="chainStatus" :config="config" />
+  <component :is="component" :status.sync="chainStatus" :id="config.id" />
 </template>
 <script>
 import { Services } from '@/common/constants'
@@ -7,6 +7,9 @@ import DrawerLayerListItemVisibleActionWfs from '@/components/DrawerLayerListIte
 
 export default {
   name: 'DrawerLayerListItemVisibleAction',
+  components: {
+    DrawerLayerListItemVisibleActionWfs
+  },
   props: {
     status: {
       required: true
@@ -27,7 +30,7 @@ export default {
     },
     component () {
       return {
-        [Services.wfs]: DrawerLayerListItemVisibleActionWfs
+        [Services.wfs]: 'DrawerLayerListItemVisibleActionWfs'
       }[this.config.type]
     }
   }
