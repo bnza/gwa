@@ -14,9 +14,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('layers', ['getType']),
+    ...mapGetters('layers', ['getFeatureType']),
     featureType () {
-      return this.getType(this.id)
+      return this.getFeatureType(this.id)
     }
   },
   render: () => null,

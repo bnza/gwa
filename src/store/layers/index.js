@@ -21,7 +21,7 @@ import actions from './actions'
  */
 const state = {
   states: {},
-  types: {},
+  featureTypes: {},
   current: null
 }
 

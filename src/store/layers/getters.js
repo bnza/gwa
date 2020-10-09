@@ -67,13 +67,13 @@ export default {
     )
     return /** @type Array<LayerConfigObject> */ map(id => getters.getConfig(id), readyLayersIds)
   },
-  getType: (state, getters, rootState, rootGetters) => id => {
+  getFeatureType: (state, getters, rootState, rootGetters) => id => {
     const { server, name } = getters.getConfig(id)
     /**
      * @type {Either}
      */
     const featureType = rootGetters['server/capabilities/getFeatureType'](server, name)
-    const type = has(id, state.types) ? state.types[id] : Either.left(`No such layer type ${id}`)
+    const type = has(id, state.featureTypes) ? state.featureTypes[id] : Either.left(`No such layer type ${id}`)
     return featureType.flatMap(_featureType => type.map(mergeRight(__, _featureType)))
   },
   /**

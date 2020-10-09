@@ -4,12 +4,12 @@ import LayerMx from '@/mixins/LayerMx'
 export default {
   mixins: [LayerMx],
   computed: {
-    ...mapGetters('layers', ['getType']),
+    ...mapGetters('layers', ['getFeatureType']),
     featureTypeReady () {
       return this.featureType.isRight()
     },
     featureType () {
-      return this.getType(this.config.id)
+      return this.getFeatureType(this.config.id)
     }
   }
 }

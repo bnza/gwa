@@ -37,11 +37,11 @@ export default {
           visible: layerConfig.visible
         }
       })
-    const type = await fetchFeatureType({ dispatch, rootGetters }, layerConfig)
+    const featureType = await fetchFeatureType({ dispatch, rootGetters }, layerConfig)
     if (layerConfig.type === Services.wfs) {
-      commit(LayerMutations.SET_TYPE, {
+      commit(LayerMutations.SET_FEATURE_TYPE, {
         id: layerConfig.id,
-        type
+        featureType
       })
     }
   },
