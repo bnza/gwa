@@ -1,0 +1,19 @@
+{
+  "title": "test1Title",
+  "description": "The test client",
+  "view": {
+    "center": [-11560592.76, 5526675.11],
+    "zoom": 10
+  },
+  "servers": [
+    {
+      "baseUrl": "http://www.example.com/geoserver"
+    }
+  ],
+  "layers": [
+    {
+      "type": "wfs",
+      "name": "topp:states"
+    }
+  ]
+}
