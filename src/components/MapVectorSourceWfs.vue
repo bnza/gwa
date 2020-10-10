@@ -53,7 +53,7 @@ export default {
         featurePrefix: ns,
         featureTypes: [name],
         outputFormat: 'application/json',
-        filter: bboxFilter('the_geom', extent, this.projection)
+        filter: bboxFilter(this.geometryName, extent, this.projection)
       })
       const data = await this.fetch(
         {
