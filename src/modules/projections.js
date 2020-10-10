@@ -1,4 +1,5 @@
 import { register } from 'ol/proj/proj4'
+import { transformExtent } from 'ol/proj'
 import proj4 from 'proj4'
 
 /**
@@ -37,4 +38,8 @@ export const registerProjection = async ({ code, def }, request) => {
   }
   proj4.defs(code, def)
   register(proj4)
+}
+
+export const transformWgs84Extent = (extent, destination) => {
+  return transformExtent(extent, 'EPSG:4326', destination)
 }

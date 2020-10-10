@@ -20,18 +20,25 @@
     <v-list-item-content
       @click="status.isLeft() || setCurrentLayer(config.id)"
     >
-      <v-list-item-title v-text="config.label"></v-list-item-title>
+      <v-list-item-content class="font-weight-light">{{config.label}}</v-list-item-content>
     </v-list-item-content>
+    <v-list-item-action>
+      <drawer-layer-list-tile-actions-menu :id="config.id" :ready="info.isRight()" />
+    </v-list-item-action>
   </v-list-item>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import LayerMx from '@/mixins/LayerMx'
+import DrawerLayerListTileActionsMenu from '@/components/DrawerLayerListTileActionsMenu'
 
 export default {
   name: 'DrawerLayerListTile',
   mixins: [LayerMx],
+  components: {
+    DrawerLayerListTileActionsMenu
+  },
   computed: {
     ...mapGetters('layers', ['getLayerInfo']),
     info () {

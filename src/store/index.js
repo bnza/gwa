@@ -5,6 +5,7 @@ import config from './config'
 import server from './server'
 import layers from './layers'
 import components from './components'
+import view from './view'
 
 Vue.use(Vuex)
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     config,
     server,
     layers,
-    components
+    components,
+    view
   }
 })

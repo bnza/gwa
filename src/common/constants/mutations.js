@@ -42,6 +42,14 @@ export const LayerMutations = Object.freeze({
   SET_FEATURE_TYPE
 })
 
+export const SET_EXTENT = 'setExtent'
+export const CLEAR_EXTENT = 'clearExtent'
+
+export const ViewMutations = Object.freeze({
+  SET_EXTENT,
+  CLEAR_EXTENT
+})
+
 export const Mutations = Object.freeze({
   ClientMutations,
   ConfigMutations,

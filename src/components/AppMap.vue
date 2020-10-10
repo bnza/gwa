@@ -5,6 +5,7 @@
     :style="`height: ${height}px`"
   >
     <vl-view
+      ref="view"
       :extent="extent"
       :zoom.sync="zoom"
       :center.sync="center"
@@ -18,9 +19,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { getMapIntPixelHeight } from '@/modules/utils'
 import ProjectConfigMx from '@/mixins/ProjectConfigMx'
 import MapLayerGroup from '@/components/MapLayerGroup'
+import { ViewMutations } from '@/common/constants/mutations'
 
 export default {
   name: 'AppMap',
@@ -37,9 +40,23 @@ export default {
       extent: null
     }
   },
+  computed: {
+    ...mapState('view', {
+      fitExtent: 'extent'
+    })
+  },
   methods: {
     onResize () {
       this.height = getMapIntPixelHeight(window.innerHeight)
+    }
+  },
+  watch: {
+    fitExtent (args) {
+      if (!args || !args.length) {
+        return
+      }
+      this.$refs.view.fit(...args)
+      this.$store.commit(`view/${ViewMutations.CLEAR_EXTENT}`)
     }
   },
   created () {
@@ -52,7 +69,6 @@ export default {
     window.addEventListener('resize', this.onResize)
     this.onResize()
   },
-
   beforeDestroy () {
     // Unregister the event listener before destroying this Vue instance
     window.removeEventListener('resize', this.onResize)
