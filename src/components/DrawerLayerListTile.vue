@@ -20,7 +20,10 @@
     <v-list-item-content
       @click="status.isLeft() || setCurrentLayer(config.id)"
     >
-      <v-list-item-content class="font-weight-light">{{config.label}}</v-list-item-content>
+      <v-list-item-title class="font-weight-light">
+        <span>
+          <v-icon small color="grey lighten-1">{{ icon }}</v-icon>
+        </span>  {{config.label}}</v-list-item-title>
     </v-list-item-content>
     <v-list-item-action>
       <drawer-layer-list-tile-actions-menu :id="config.id" :ready="info.isRight()" />
@@ -30,6 +33,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { Services } from '@/common/constants'
 import LayerMx from '@/mixins/LayerMx'
 import DrawerLayerListTileActionsMenu from '@/components/DrawerLayerListTileActionsMenu'
 
@@ -51,6 +55,17 @@ export default {
       set (value) {
         this.setLayerProp({ id: this.config.id, key: 'visible', value })
       }
+    },
+    icon () {
+      let icon = ''
+      switch (this.data.config.type) {
+        case Services.wfs:
+          icon = 'texture'
+          break
+        default:
+          icon = 'photo'
+      }
+      return icon
     }
   }
 }
