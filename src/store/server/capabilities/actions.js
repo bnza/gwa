@@ -2,7 +2,8 @@ import { keys, map } from 'ramda'
 import { Services } from '@/common/constants'
 import { CapabilitiesMutations } from '@/common/constants/mutations'
 import { getCapabilitiesOperationRequestConfig } from '@/modules/server/service/operation'
-import { parseXml } from '@/modules/server/service/capabilities'
+import { parseXmlCapabilities } from '@/modules/server/service/capabilities'
+// import { parseXmlCapabilities as parseWfsCapabilities } from '@/modules/server/service/wms/capabilities'
 
 /**
  *
@@ -37,7 +38,17 @@ const loadServiceCapabilities = async ({ dispatch, commit }, { server, service }
     return either
   }
   const capabilities = await fetchServerServiceCapabilities({ dispatch }, { server, service })
-  return commitCapabilities(capabilities.flatMap(parseXml))
+  const parsers = {
+    [Services.wms]: parseXmlCapabilities,
+    [Services.wfs]: parseXmlCapabilities
+  }
+  /*  let parsed
+  if (service === Services.wms) {
+    parsed = capabilities.map(xml => new WMSCapabilities().read(xml))
+  } else {
+    parsed = capabilities.flatMap(parseXml)
+  } */
+  return commitCapabilities(capabilities.flatMap(parsers[service]))
 }
 
 export default {

@@ -1,4 +1,5 @@
 import { Right, Left } from 'monet'
+import { values, keys, map } from 'ramda'
 import { parseXmlEither, parseXml, getRoot, getVersion, getService } from '@/modules/server/service/capabilities'
 import { Versions } from '@/common/constants/server'
 import { Services } from '@/common/constants'
@@ -20,12 +21,22 @@ describe('capabilities', () => {
     })
   })
   describe('getRoot', () => {
-    describe.each(Object.keys(Services))('service "%s"', service => {
-      it.each([
-        [Versions.wfs.v100, 'WFS_Capabilities'],
-        [Versions.wfs.v110, 'wfs:WFS_Capabilities'],
-        [Versions.wfs.v200, 'wfs:WFS_Capabilities']
-      ])('version "%s" returns expected "%s"', (version, expected) => {
+    const expecteds = {
+      wfs: {
+        [Versions.wfs.v100]: 'WFS_Capabilities',
+        [Versions.wfs.v110]: 'wfs:WFS_Capabilities',
+        [Versions.wfs.v200]: 'wfs:WFS_Capabilities'
+      },
+      wms: {
+        [Versions.wms.v110]: 'WMT_MS_Capabilities',
+        [Versions.wms.v111]: 'WMT_MS_Capabilities',
+        [Versions.wms.v130]: 'WMS_Capabilities'
+      }
+    }
+    describe.each(keys(Services))('service "%s"', service => {
+      it.each(
+        map(version => [version, expecteds[service][version]], values(Versions[service]))
+      )('version "%s" returns expected "%s', (version, expected) => {
         const xml = capabilitiesXmls[service][version]
         const parsed = parseXml(xml)
         expect(parsed.map(getRoot).right()).toBe(expected)
@@ -33,12 +44,10 @@ describe('capabilities', () => {
     })
   })
   describe('getVersion', () => {
-    describe.each(Object.keys(Services))('service "%s"', service => {
-      it.each([
-        [Versions.wfs.v100],
-        [Versions.wfs.v110],
-        [Versions.wfs.v200]
-      ])('version "%s" returns expected', (version) => {
+    describe.each(keys(Services))('service "%s"', service => {
+      it.each(
+        map(version => [version], values(Versions[service]))
+      )('version "%s" returns expected', (version) => {
         const xml = capabilitiesXmls[service][version]
         const parsed = parseXml(xml)
         expect(parsed.map(getVersion).right()).toBe(version)
@@ -47,11 +56,9 @@ describe('capabilities', () => {
   })
   describe('getService', () => {
     describe.each(Object.keys(Services))('service "%s"', service => {
-      it.each([
-        [Versions.wfs.v100],
-        [Versions.wfs.v110],
-        [Versions.wfs.v200]
-      ])('version "%s" returns expected', (version) => {
+      it.each(
+        map(version => [version], values(Versions[service]))
+      )('version "%s" returns expected', (version) => {
         const xml = capabilitiesXmls[service][version]
         const parsed = parseXml(xml)
         expect(parsed.map(getService).right()).toBe(service)

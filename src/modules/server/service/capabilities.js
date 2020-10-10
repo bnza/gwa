@@ -1,10 +1,28 @@
 import xml2js from 'xml2js'
 import { Right, Left } from 'monet'
-import { head, keys, prop, toPairs, find, values } from 'ramda'
+import { head, keys, prop, toPairs, find, values, map } from 'ramda'
 import { GetCapabilitiesRootElements } from '@/common/constants/operations'
 /**
  * @typedef {import('monet').Either} Either
  */
+
+/**
+ *
+ * @typedef {Object} LatLongBoundingBox100
+ * @property {number} minx
+ * @property {number} miny
+ * @property {number} maxx
+ * @property {number} maxy
+ */
+
+/**
+ * @param {{$: LatLongBoundingBox100}} rawBbox
+ * @return {ExtentArray}
+ */
+export const normalizeBboxObject = rawBbox => {
+  const bbox = prop('$', rawBbox)
+  return map(Number, [bbox.minx, bbox.miny, bbox.maxx, bbox.maxy])
+}
 
 /**
  * Returns the first object property key value
@@ -68,3 +86,5 @@ export const getService = parsed => {
     toPairs(GetCapabilitiesRootElements))
   )
 }
+
+export const parseXmlCapabilities = parseXml

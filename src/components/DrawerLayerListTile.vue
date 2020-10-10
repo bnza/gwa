@@ -3,8 +3,7 @@
     :class="{ current: isCurrentLayer(config.id) }"
   >
     <v-list-item-action>
-      <drawer-layer-list-item-visible-action :status.sync="status" :config="config" />
-      <v-checkbox v-if="status.isRight()" v-model="visible"></v-checkbox>
+      <v-checkbox v-if="info.isRight()" v-model="visible"></v-checkbox>
       <v-tooltip v-else bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-icon
@@ -15,7 +14,7 @@
             report_problem
           </v-icon>
         </template>
-        <span>{{status.left()}}</span>
+        <span>{{info.left()}}</span>
       </v-tooltip>
     </v-list-item-action>
     <v-list-item-content
@@ -27,20 +26,17 @@
 </template>
 
 <script>
-import { Either } from 'monet'
-import DrawerLayerListItemVisibleAction from '@/components/DrawerLayerListItemVisibleAction'
+import { mapGetters } from 'vuex'
 import LayerMx from '@/mixins/LayerMx'
 
 export default {
   name: 'DrawerLayerListTile',
-  components: { DrawerLayerListItemVisibleAction },
   mixins: [LayerMx],
-  data () {
-    return {
-      status: Either.left('Not ready')
-    }
-  },
   computed: {
+    ...mapGetters('layers', ['getLayerInfo']),
+    info () {
+      return this.getLayerInfo(this.config.id)
+    },
     visible: {
       get () {
         return this.getLayerProp(this.config.id, 'visible')

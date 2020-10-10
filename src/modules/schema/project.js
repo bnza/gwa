@@ -38,7 +38,7 @@ export const layerSchema = Joi.object({
   server: Joi.string().default('default'),
   type: Joi.string()
     .required()
-    .valid('wfs'),
+    .valid('wfs', 'wms'),
   visible: Joi.boolean().default(true),
   group: Joi.string().default('default'),
   crs: Joi.string()
@@ -52,6 +52,13 @@ export const wfsLayerSchema = layerSchema.append({
   style: styleSchema.default()
 })
 
+export const wmsLayerSchema = layerSchema.append({
+  type: Joi.string()
+    .required()
+    .default('wms')
+    .valid('wms')
+})
+
 /**
  *
  * @type {Joi.ArraySchema<>}
@@ -59,6 +66,15 @@ export const wfsLayerSchema = layerSchema.append({
 const projectLayersSchema = Joi.array()
   .items(
     wfsLayerSchema.append({
+      server: Joi.string()
+        .default('default')
+        .valid(
+          Joi.in('/servers', {
+            adjust: servers => servers.map(server => server.name)
+          })
+        )
+    }),
+    wmsLayerSchema.append({
       server: Joi.string()
         .default('default')
         .valid(
@@ -93,8 +109,16 @@ export const serverWfsServicesSchema = Joi.object({
     .allow('1.0.0', '1.1.0', '2.0.0')
 })
 
+export const serverWmsServicesSchema = Joi.object({
+  path: Joi.string().default('wms'),
+  version: Joi.string()
+    .default('1.3.0')
+    .allow('1.1.0', '1.3.0')
+})
+
 export const serverServicesSchema = Joi.object({
-  wfs: serverWfsServicesSchema.default()
+  wfs: serverWfsServicesSchema.default(),
+  wms: serverWmsServicesSchema.default()
 })
 
 /**

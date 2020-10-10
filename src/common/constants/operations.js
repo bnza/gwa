@@ -6,11 +6,18 @@ export const GET_CAPABILITIES = 'GetCapabilities'
 const WfsGetCapabilitiesRootElements = Object.freeze({
   [Versions.wfs.v100]: 'WFS_Capabilities',
   [Versions.wfs.v110]: 'wfs:WFS_Capabilities',
-  [Versions.wfs.v110]: 'wfs:WFS_Capabilities'
+  [Versions.wfs.v200]: 'wfs:WFS_Capabilities'
+})
+
+const WmsGetCapabilitiesRootElements = Object.freeze({
+  [Versions.wms.v110]: 'WMT_MS_Capabilities',
+  [Versions.wms.v111]: 'WMT_MS_Capabilities',
+  [Versions.wms.v130]: 'WMS_Capabilities'
 })
 
 export const GetCapabilitiesRootElements = Object.freeze({
-  [Services.wfs]: WfsGetCapabilitiesRootElements
+  [Services.wfs]: WfsGetCapabilitiesRootElements,
+  [Services.wms]: WmsGetCapabilitiesRootElements
 })
 
 export const GET_FEATURE = 'GetFeature'

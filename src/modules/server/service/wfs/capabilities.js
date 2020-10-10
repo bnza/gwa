@@ -1,6 +1,6 @@
 import { map, head, prop, partial, concat, split, find, propEq } from 'ramda'
 import { Either } from 'monet'
-import { headProp, getRoot, getVersion } from '@/modules/server/service/capabilities'
+import { headProp, getRoot, getVersion, normalizeBboxObject } from '@/modules/server/service/capabilities'
 import { WfsVersions } from '@/common/constants/server'
 import { stripCrsNamespace } from '@/modules/utils'
 
@@ -18,23 +18,7 @@ const getRawFeatureTypeList = parsed => prop(
   )
 )
 
-/**
- *
- * @typedef {Object} LatLongBoundingBox100
- * @property {number} minx
- * @property {number} miny
- * @property {number} maxx
- * @property {number} maxy
- */
-
-/**
- * @param {{$: LatLongBoundingBox100}} rawBbox
- * @return {ExtentArray}
- */
-const normalizeBbox100 = rawBbox => {
-  const bbox = prop('$', rawBbox)
-  return map(Number, [bbox.minx, bbox.miny, bbox.maxx, bbox.maxy])
-}
+const normalizeBbox100 = normalizeBboxObject
 
 /**
  * {
@@ -179,3 +163,5 @@ export const getFeatureType = (name, featureTypeList) => {
   }
   return Either.of(featureType)
 }
+
+export const getLayerInfo = getFeatureType

@@ -8,5 +8,6 @@ export const GeometrySupportedTypes = Object.freeze([
   'GeometryCollection'
 ])
 export const Services = Object.freeze({
-  wfs: 'wfs'
+  wfs: 'wfs',
+  wms: 'wms'
 })

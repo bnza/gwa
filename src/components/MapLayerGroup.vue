@@ -13,6 +13,7 @@
 import { reverse } from 'ramda'
 import { mapGetters } from 'vuex'
 import MapLayerWfs from '@/components/MapLayerWfs'
+import MapLayerWms from '@/components/MapLayerWms'
 export default {
   name: 'MapLayerGroup',
   props: {
@@ -30,6 +31,7 @@ export default {
   methods: {
     getComponent (layer) {
       return {
+        wms: MapLayerWms,
         wfs: MapLayerWfs
       }[layer.type]
     }
