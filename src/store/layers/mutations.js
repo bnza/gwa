@@ -34,7 +34,7 @@ export default {
     }
     Vue.set(state.states[id], key, !state.states[id][key])
   },
-  [LayerMutations.SET_CURRENT] (state, id) {
-    Vue.set(state, 'current', id)
+  [LayerMutations.SET_ACTIVE] (state, id) {
+    Vue.set(state, 'active', id)
   }
 }

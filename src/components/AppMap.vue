@@ -52,10 +52,10 @@ export default {
   },
   watch: {
     fitExtent (args) {
-      if (!args || !args.length) {
+      if (!args || (Array.isArray(args) && !args.length)) {
         return
       }
-      this.$refs.view.fit(...args)
+      this.$refs.view.fit(args)
       this.$store.commit(`view/${ViewMutations.CLEAR_EXTENT}`)
     }
   },
@@ -75,5 +75,3 @@ export default {
   }
 }
 </script>
-
-<style scoped></style>

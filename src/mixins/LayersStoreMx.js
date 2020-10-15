@@ -7,13 +7,13 @@ export default {
       getLayerData: 'get',
       layersConfigs: 'configs',
       getLayerProp: 'getProp',
-      isCurrentLayer: 'isCurrent',
+      isActiveLayer: 'isActive',
       getReadyLayerConfigsByGroup: 'getReadyLayerConfigsByGroup'
     })
   },
   methods: {
     ...mapMutations('layers', {
-      setCurrentLayer: LayerMutations.SET_CURRENT,
+      setActiveLayer: LayerMutations.SET_ACTIVE,
       setLayerProp: LayerMutations.SET_PROP
     })
   }

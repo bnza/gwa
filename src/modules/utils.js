@@ -1,5 +1,9 @@
 const mainToolbarHeight = 48
 const mainFooterHeight = 36
+const drawerTabsHeight = 72
+const tableTitleHeight = 32
+const tableHeadersHeight = 38
+const tableFooterHeight = 58
 
 /**
  * Return the map height in pixel
@@ -9,6 +13,16 @@ const mainFooterHeight = 36
  */
 export const getMapIntPixelHeight = /* @__PURE__ */ innerHeight => {
   return innerHeight - (mainToolbarHeight + mainFooterHeight)
+}
+
+/**
+ * Return the map height in pixel
+ * @param innerHeight
+ * @return {number} the map height in pixel
+ * @private
+ */
+export const getTableIntPixelHeight = /* @__PURE__ */ innerHeight => {
+  return innerHeight - (mainToolbarHeight + drawerTabsHeight + tableTitleHeight + tableHeadersHeight + tableFooterHeight)
 }
 
 /**

@@ -1,6 +1,6 @@
 <template>
   <v-list-item
-    :class="{ current: isCurrentLayer(config.id) }"
+    :class="{ current: isActive }"
   >
     <v-list-item-action>
       <v-checkbox v-if="info.isRight()" v-model="visible"></v-checkbox>
@@ -18,7 +18,7 @@
       </v-tooltip>
     </v-list-item-action>
     <v-list-item-content
-      @click="status.isLeft() || setCurrentLayer(config.id)"
+      @click="info.isLeft() || setActiveLayer(config.id)"
     >
       <v-list-item-title class="font-weight-light">
         <span>

@@ -90,5 +90,19 @@ export default {
    * @param {LayersVuexState} state
    * @return {function(string): boolean}
    */
-  isCurrent: state => id => id === state.current
+  isActive: state => id => id === state.active,
+  /**
+   *
+   * @param state
+   * @param getters
+   * @return {function(id: string): boolean}
+   */
+  hasFeatures: (state, getters) => id => getters.isActive(id) && getters.getConfig(id).type === Services.wfs,
+  /**
+   *
+   * @param state
+   * @param getters
+   * @return {boolean}
+   */
+  activeLayerHasFeatures: (state, getters) => !!state.active && getters.hasFeatures(state.active)
 }

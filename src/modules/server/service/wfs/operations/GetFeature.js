@@ -1,4 +1,6 @@
 import { mergeRight } from 'ramda'
+import { createElementNS } from 'ol/xml'
+import { writeStringTextNode } from 'ol/format/xsd'
 import { WfsOperations } from '@/common/constants/operations'
 import { Services } from '@/common/constants'
 import { WfsVersions } from '@/common/constants/server'
@@ -93,3 +95,26 @@ export default Object.freeze({
       }
     }
 })
+
+/**
+ * @type {string}
+ */
+const OGCNS = 'http://www.opengis.net/ogc'
+
+const writeSortByNode = (node, sortBy) => {
+  const sortOrderNode = createElementNS(OGCNS, 'SortOrder')
+  writeStringTextNode(sortOrderNode, sortBy.sortOrder)
+  const propertyNameNode = createElementNS(OGCNS, 'PropertyName')
+  writeStringTextNode(propertyNameNode, sortBy.propertyName)
+  const sortPropertyNode = createElementNS(OGCNS, 'SortProperty')
+  sortPropertyNode.appendChild(propertyNameNode)
+  sortPropertyNode.appendChild(sortOrderNode)
+  const sortByNode = createElementNS(OGCNS, 'SortBy')
+  sortByNode.appendChild(sortPropertyNode)
+  node.firstElementChild.appendChild(sortByNode)
+  return node
+}
+
+export const addSortByToQueryNode = (getFeature, pagination) => {
+  return writeSortByNode(getFeature, pagination)
+}

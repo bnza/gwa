@@ -1,4 +1,5 @@
 import LayersStoreMx from './LayersStoreMx'
+import { Services } from '@/common/constants'
 export default {
   mixins: [LayersStoreMx],
   props: {
@@ -16,6 +17,12 @@ export default {
     },
     serviceReady () {
       return this.service.capabilities.isRight()
+    },
+    hasFeatures () {
+      return this.config.type === Services.wfs
+    },
+    isActive () {
+      return this.isActiveLayer(this.config.id)
     }
   }
 }

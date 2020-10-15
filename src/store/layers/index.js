@@ -22,7 +22,7 @@ import actions from './actions'
 const state = {
   states: {},
   featureTypes: {},
-  current: null
+  active: null
 }
 
 export default {
