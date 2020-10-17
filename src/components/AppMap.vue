@@ -55,7 +55,7 @@ export default {
       if (!args || (Array.isArray(args) && !args.length)) {
         return
       }
-      this.$refs.view.fit(args)
+      this.$refs.view.fit(...args)
       this.$store.commit(`view/${ViewMutations.CLEAR_EXTENT}`)
     }
   },

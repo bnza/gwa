@@ -74,7 +74,7 @@ export default {
     fitViewExtent (geoJsonFeature) {
       const feature = (new GeoJSON()).readFeature(geoJsonFeature)
       const geom = clone(feature.getGeometry())
-      this.setViewExtent(geom.transform(this.type.projection, this.$store.state.config.valid.dataProjection))
+      this.setViewExtent([geom.transform(this.type.projection, this.$store.state.config.valid.dataProjection)])
     }
   }
 }
