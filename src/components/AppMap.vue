@@ -15,6 +15,7 @@
       <vl-source-osm />
     </vl-layer-tile>
     <map-layer-group id="default" />
+    <map-layer-interaction-select-wfs v-if="activeLayer" :active-layer="activeLayer" @select="setSelectedFeature"/>
   </vl-map>
 </template>
 
@@ -23,13 +24,15 @@ import { mapState } from 'vuex'
 import { getMapIntPixelHeight } from '@/modules/utils'
 import ProjectConfigMx from '@/mixins/ProjectConfigMx'
 import MapLayerGroup from '@/components/MapLayerGroup'
-import { ViewMutations } from '@/common/constants/mutations'
+import MapLayerInteractionSelectWfs from '@/components/MapLayerInteractionSelectWfs'
+import { ViewMutations, LayerMutations } from '@/common/constants/mutations'
 
 export default {
   name: 'AppMap',
   mixins: [ProjectConfigMx],
   components: {
-    MapLayerGroup
+    MapLayerGroup,
+    MapLayerInteractionSelectWfs
   },
   data () {
     return {
@@ -43,11 +46,17 @@ export default {
   computed: {
     ...mapState('view', {
       fitExtent: 'extent'
+    }),
+    ...mapState('layers', {
+      activeLayer: 'active'
     })
   },
   methods: {
     onResize () {
       this.height = getMapIntPixelHeight(window.innerHeight)
+    },
+    setSelectedFeature (selected) {
+      this.$store.commit(`layers/${LayerMutations.SET_SELECTED_FEATURE}`, selected)
     }
   },
   watch: {

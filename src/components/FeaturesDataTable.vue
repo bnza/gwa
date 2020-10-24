@@ -84,9 +84,6 @@ export default {
   methods: {
     onResize () {
       this.height = `${getTableIntPixelHeight(window.innerHeight)}px`
-    },
-    onScroll (e) {
-      console.log(e)
     }
   },
   created () {

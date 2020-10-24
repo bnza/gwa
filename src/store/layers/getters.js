@@ -97,12 +97,22 @@ export default {
    * @param getters
    * @return {function(id: string): boolean}
    */
-  hasFeatures: (state, getters) => id => getters.isActive(id) && getters.getConfig(id).type === Services.wfs,
+  hasFeatures: (state, getters) => id => {
+    return getters.isActive(id) && getters.getConfig(id).type === Services.wfs
+  },
   /**
    *
    * @param state
    * @param getters
    * @return {boolean}
    */
-  activeLayerHasFeatures: (state, getters) => !!state.active && getters.hasFeatures(state.active)
+  activeLayerHasFeatures: (state, getters) => {
+    return !!state.active && getters.hasFeatures(state.active)
+  },
+  /**
+   *
+   * @param state
+   * @return {boolean}
+   */
+  hasSelectedFeature: (state) => state.selectedFeature.isSome()
 }

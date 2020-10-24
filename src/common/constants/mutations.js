@@ -33,13 +33,17 @@ export const SET_PROP = 'setProp'
 export const TOGGLE_PROP = 'toggleProp'
 export const SET_ACTIVE = 'setActive'
 export const SET_FEATURE_TYPE = 'setFeatureType'
+export const SET_SELECTED_FEATURE = 'setSelectedFeature'
+export const CLEAR_SELECTED_FEATURE = 'clearSelectedFeature'
 
 export const LayerMutations = Object.freeze({
   SET_LAYER_STATE,
   SET_PROP,
   TOGGLE_PROP,
   SET_ACTIVE,
-  SET_FEATURE_TYPE
+  SET_FEATURE_TYPE,
+  SET_SELECTED_FEATURE,
+  CLEAR_SELECTED_FEATURE
 })
 
 export const SET_EXTENT = 'setExtent'

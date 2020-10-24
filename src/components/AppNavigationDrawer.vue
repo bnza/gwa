@@ -10,7 +10,7 @@
           Table
           <v-icon>reorder</v-icon>
         </v-tab>
-        <v-tab @change="setActiveTab(DrawerTabs.ITEM)">
+        <v-tab @change="setActiveTab(DrawerTabs.ITEM)" v-if="hasSelectedFeature">
           Data
           <v-icon>article</v-icon>
         </v-tab>
@@ -22,10 +22,8 @@
         <v-tab-item v-if="activeLayerHasFeatures" >
             <features-data-card :id="activeLayer" />
         </v-tab-item>
-        <v-tab-item >
-          <v-card flat>
-            <v-card-text>Item data</v-card-text>
-          </v-card>
+        <v-tab-item v-if="hasSelectedFeature">
+            <feature-data-card />
         </v-tab-item>
       </v-tabs-items>
     </v-card>
@@ -38,12 +36,14 @@ import { DrawerTabs } from '@/common/constants'
 import { SET_VISIBLE_TAB } from '@/store/components/AppNavigationDrawer'
 import AppDrawerLayersList from '@/components/AppDrawerLayersList'
 import FeaturesDataCard from '@/components/FeaturesDataCard'
+import FeatureDataCard from '@/components/FeatureDataCard'
 
 export default {
   name: 'AppNavigationDrawer',
   components: {
     AppDrawerLayersList,
-    FeaturesDataCard
+    FeaturesDataCard,
+    FeatureDataCard
   },
   data () {
     return {
@@ -53,7 +53,7 @@ export default {
   computed: {
     ...mapState('components/AppNavigationDrawer', ['visible', 'visibleTab']),
     ...mapState('layers', { activeLayer: 'active' }),
-    ...mapGetters('layers', ['activeLayerHasFeatures']),
+    ...mapGetters('layers', ['activeLayerHasFeatures', 'hasSelectedFeature']),
     DrawerTabs: () => DrawerTabs,
     currentTab: {
       get () {

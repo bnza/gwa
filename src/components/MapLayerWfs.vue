@@ -1,5 +1,5 @@
 <template>
-  <vl-layer-vector v-if="featureTypeReady" :visible="data.state.visible">
+  <vl-layer-vector v-if="featureTypeReady" :visible="data.state.visible" :id="config.id">
     <map-vector-source-wfs :config="config" />
     <map-layer-style-wfs :style-config="data.config.style" />
   </vl-layer-vector>

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { Maybe } from 'monet'
 import { LayerMutations } from '@/common/constants/mutations'
 
 export default {
@@ -36,5 +37,13 @@ export default {
   },
   [LayerMutations.SET_ACTIVE] (state, id) {
     Vue.set(state, 'active', id)
+  },
+  /**
+   *
+   * @param state
+   * @param {?Object<{layer: string, feature: Object}>} selected
+   */
+  [LayerMutations.SET_SELECTED_FEATURE] (state, selected) {
+    Vue.set(state, 'selectedFeature', Maybe.fromNull(selected))
   }
 }

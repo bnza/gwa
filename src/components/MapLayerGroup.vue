@@ -5,6 +5,7 @@
       :key="layerConfig.id"
       :is="getComponent(layerConfig)"
       :config="layerConfig"
+      :id="layerConfig.id"
     />
   </vl-layer-group>
 </template>

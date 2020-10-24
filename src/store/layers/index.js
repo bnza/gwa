@@ -1,3 +1,4 @@
+import { None } from 'monet'
 import mutations from './mutations'
 import getters from './getters'
 import actions from './actions'
@@ -12,7 +13,7 @@ import actions from './actions'
  * @typedef {Object} LayersVuexState
  * @property {Object<string, LayerStoredState>} states
  * @property {Object<string, Either<AxiosResponseError,Object>>} types - DescribeFeatureType json response
- * @property {string} current
+ * @property {string} active
  */
 
 /**
@@ -22,7 +23,8 @@ import actions from './actions'
 const state = {
   states: {},
   featureTypes: {},
-  active: null
+  active: null,
+  selectedFeature: None()
 }
 
 export default {
