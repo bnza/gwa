@@ -3,9 +3,12 @@
     :load-tiles-while-animating="true"
     :load-tiles-while-interacting="true"
     :style="`height: ${height}px`"
+    :data-projection="dataProjection"
+    @pointermove="storePointerCoords"
   >
     <vl-view
       ref="view"
+      :projection="dataProjection"
       :extent="extent"
       :zoom.sync="zoom"
       :center.sync="center"
@@ -33,6 +36,7 @@ import MapLayerGroup from '@/components/MapLayerGroup'
 import MapLayerInteractionSelectWfs from '@/components/MapLayerInteractionSelectWfs'
 import { ViewMutations, LayerMutations } from '@/common/constants/mutations'
 import { SET_VISIBLE_TAB } from '@/store/components/AppNavigationDrawer'
+import { SET_COORDS } from '@/store/components/AppMap'
 import { DrawerTabs } from '@/common/constants'
 
 export default {
@@ -69,6 +73,9 @@ export default {
     setSelectedFeature (selected) {
       this.$store.commit(`layers/${LayerMutations.SET_SELECTED_FEATURE}`, selected)
       this.$store.commit(`components/AppNavigationDrawer/${SET_VISIBLE_TAB}`, DrawerTabs.ITEM)
+    },
+    storePointerCoords ({ coordinate }) {
+      this.$store.commit(`components/AppMap/${SET_COORDS}`, coordinate)
     }
   },
   watch: {

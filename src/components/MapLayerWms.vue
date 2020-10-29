@@ -3,10 +3,9 @@
     v-if="serviceReady"
     :visible="data.state.visible"
     :id="config.id"
-    :extent="wgs84Extent"
     extent-projection="EPSG:4326"
   >
-    <map-source-image-wms :config="config" />
+    <map-source-image-wms :tiled="true" :config="config" />
   </vl-layer-tile>
 </template>
 

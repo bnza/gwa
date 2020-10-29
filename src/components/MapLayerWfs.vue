@@ -3,6 +3,8 @@
     v-if="featureTypeReady"
     :visible="data.state.visible"
     :id="config.id"
+    :extent="wgs84Extent"
+    extent-projection="EPSG:4326"
   >
     <map-vector-source-wfs :config="config" />
     <map-layer-style-wfs :style-config="data.config.style" />
