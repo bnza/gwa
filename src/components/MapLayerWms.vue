@@ -1,5 +1,11 @@
 <template>
-  <vl-layer-tile v-if="serviceReady" :visible="data.state.visible">
+  <vl-layer-tile
+    v-if="serviceReady"
+    :visible="data.state.visible"
+    :id="config.id"
+    :extent="wgs84Extent"
+    extent-projection="EPSG:4326"
+  >
     <map-source-image-wms :config="config" />
   </vl-layer-tile>
 </template>

@@ -1,3 +1,4 @@
+import { mapGetters } from 'vuex'
 import LayersStoreMx from './LayersStoreMx'
 import { Services } from '@/common/constants'
 export default {
@@ -9,6 +10,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('layers', ['getLayerInfo']),
     data () {
       return this.getLayerData(this.config)
     },
@@ -23,6 +25,9 @@ export default {
     },
     isActive () {
       return this.isActiveLayer(this.config.id)
+    },
+    wgs84Extent () {
+      return this.getLayerInfo(this.config.id).cata(() => undefined, info => info.extent)
     }
   }
 }
