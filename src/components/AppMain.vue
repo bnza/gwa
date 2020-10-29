@@ -1,8 +1,8 @@
 <template>
   <div>
-    <app-config-manager />
+    <app-config-manager @layersSet="layersSet=true"/>
     <app-bar />
-    <app-navigation-drawer />
+    <app-navigation-drawer :layers-set="layersSet"/>
       <v-main>
         <app-map />
       </v-main>
@@ -19,7 +19,12 @@ import AppNavigationDrawer from '@/components/AppNavigationDrawer'
 
 export default {
   name: 'AppMain',
-  components: { AppBar, AppConfigManager, AppFooter, AppMap, AppNavigationDrawer }
+  components: { AppBar, AppConfigManager, AppFooter, AppMap, AppNavigationDrawer },
+  data () {
+    return {
+      layersSet: false
+    }
+  }
 }
 </script>
 

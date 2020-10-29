@@ -15,12 +15,18 @@
       <vl-source-osm />
     </vl-layer-tile>
     <map-layer-group id="default" />
+    <map-layer-group
+      v-for="group in groupLayers"
+      :key="group.id"
+      :id="group.name"
+      :name="group.name"
+      />
     <map-layer-interaction-select-wfs v-if="activeLayer" :active-layer="activeLayer" @select="setSelectedFeature"/>
   </vl-map>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { getMapIntPixelHeight } from '@/modules/utils'
 import ProjectConfigMx from '@/mixins/ProjectConfigMx'
 import MapLayerGroup from '@/components/MapLayerGroup'
@@ -51,7 +57,10 @@ export default {
     }),
     ...mapState('layers', {
       activeLayer: 'active'
-    })
+    }),
+    ...mapGetters('config', [
+      'groupLayers'
+    ])
   },
   methods: {
     onResize () {

@@ -1,5 +1,5 @@
 <template>
-  <vl-layer-group :id="group">
+  <vl-layer-group :id="name">
     <component
       v-for="layerConfig in members"
       :key="layerConfig.id"
@@ -18,7 +18,7 @@ import MapLayerWms from '@/components/MapLayerWms'
 export default {
   name: 'MapLayerGroup',
   props: {
-    group: {
+    name: {
       type: String,
       default: 'default'
     }
@@ -26,7 +26,7 @@ export default {
   computed: {
     ...mapGetters('layers', ['getReadyLayerConfigsByGroup']),
     members () {
-      return reverse(this.getReadyLayerConfigsByGroup(this.group))
+      return reverse(this.getReadyLayerConfigsByGroup(this.name))
     }
   },
   methods: {

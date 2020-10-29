@@ -1,4 +1,4 @@
-import { map } from 'ramda'
+import { map, forEach } from 'ramda'
 import { LayerMutations } from '@/common/constants/mutations'
 import DescribeFeatureType from '@/modules/server/service/wfs/operations/DescribeFeatureType'
 import { Services } from '@/common/constants'
@@ -29,14 +29,6 @@ export default {
    * @param {LayerConfigObject} layerConfig
    */
   async loadLayer ({ commit, dispatch, rootGetters }, layerConfig) {
-    commit(
-      LayerMutations.SET_LAYER_STATE,
-      {
-        id: layerConfig.id,
-        layerState: {
-          visible: layerConfig.visible
-        }
-      })
     const featureType = await fetchFeatureType({ dispatch, rootGetters }, layerConfig)
     if (layerConfig.type === Services.wfs) {
       commit(LayerMutations.SET_FEATURE_TYPE, {
@@ -45,7 +37,17 @@ export default {
       })
     }
   },
-  loadConfigLayers ({ dispatch, getters }) {
+  setLayersStates ({ commit, getters }) {
+    forEach(layerConfig => commit(
+      LayerMutations.SET_LAYER_STATE,
+      {
+        id: layerConfig.id,
+        layerState: {
+          visible: layerConfig.visible
+        }
+      }), getters.configs)
+  },
+  loadConfigLayers ({ commit, dispatch, getters }) {
     return Promise.all(map(layerConfig => dispatch('loadLayer', layerConfig), getters.configs))
   }
 }

@@ -1,5 +1,5 @@
 import { Maybe } from 'monet'
-import { find, propEq, filter } from 'ramda'
+import { find, propEq, filter, flatten, map, prop, concat } from 'ramda'
 
 export default {
   /**
@@ -27,9 +27,14 @@ export default {
     return find(propEq('name', name))(getters.servers)
   },
   layers: state => {
-    // TODO add layerGroups
-    return state.valid.layers
+    const ungrouped = state.valid.layers || []
+    let grouped = state.valid.groupLayers || []
+    if (grouped.length) {
+      grouped = flatten(map(prop('layers'), grouped))
+    }
+    return concat(ungrouped, grouped)
   },
+  groupLayers: state => state.valid.groupLayers,
   /**
    *
    * @param {ConfigVuexState} state

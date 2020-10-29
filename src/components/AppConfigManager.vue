@@ -10,7 +10,11 @@ export default {
   created () {
     document.title = this.$store.state.config.valid.title
     this.$store.dispatch('server/capabilities/loadServersCapabilities').then(
-      () => this.$store.dispatch('layers/loadConfigLayers')
+      () => {
+        this.$store.dispatch(('layers/setLayersStates'))
+        this.$emit('layersSet')
+        this.$store.dispatch('layers/loadConfigLayers')
+      }
     )
   }
 }

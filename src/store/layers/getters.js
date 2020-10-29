@@ -11,8 +11,9 @@ import { Services } from '@/common/constants'
  */
 
 export default {
-  configs: (state, getters, rootState) => {
-    return rootState.config.valid.layers
+
+  configs: (state, getters, rootState, rootGetters) => {
+    return rootGetters['config/layers']
   },
   /**
    *

@@ -17,7 +17,7 @@
       </v-tabs>
       <v-tabs-items :value="currentTab">
         <v-tab-item>
-          <app-drawer-layers-list />
+          <app-drawer-layers-list v-if="layersSet"/>
         </v-tab-item>
         <v-tab-item v-if="activeLayerHasFeatures" >
             <features-data-card :id="activeLayer" />
@@ -44,6 +44,12 @@ export default {
     AppDrawerLayersList,
     FeaturesDataCard,
     FeatureDataCard
+  },
+  props: {
+    layersSet: {
+      type: Boolean,
+      required: true
+    }
   },
   data () {
     return {

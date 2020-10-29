@@ -1,5 +1,6 @@
 import Joi from 'joi'
 import { v4 } from 'uuid'
+import { mergeRight } from 'ramda'
 import {
   urlSchema,
   projectionSchema,
@@ -59,30 +60,36 @@ export const wmsLayerSchema = layerSchema.append({
     .valid('wms')
 })
 
+const serverMustExistConstraint = {
+  server: Joi.string()
+    .default('default')
+    .valid(
+      Joi.in('/servers', {
+        adjust: servers => servers.map(server => server.name)
+      })
+    )
+}
+
+const groupNameReferenceConstraint = {
+  group: Joi.string().default(Joi.ref('....name'))
+}
+
 /**
  *
  * @type {Joi.ArraySchema<>}
  */
 const projectLayersSchema = Joi.array()
   .items(
-    wfsLayerSchema.append({
-      server: Joi.string()
-        .default('default')
-        .valid(
-          Joi.in('/servers', {
-            adjust: servers => servers.map(server => server.name)
-          })
-        )
-    }),
-    wmsLayerSchema.append({
-      server: Joi.string()
-        .default('default')
-        .valid(
-          Joi.in('/servers', {
-            adjust: servers => servers.map(server => server.name)
-          })
-        )
-    })
+    wfsLayerSchema.append(serverMustExistConstraint),
+    wmsLayerSchema.append(serverMustExistConstraint)
+  )
+  .unique('id')
+  .min(1)
+
+const projectGroupedLayersSchema = Joi.array()
+  .items(
+    wfsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint)),
+    wmsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint))
   )
   .unique('id')
   .min(1)
@@ -171,12 +178,13 @@ export const viewSchema = Joi.object({
 })
 
 const projectLayerGroupSchema = Joi.object({
+  id: Joi.string().default(() => v4()),
   label: Joi.string().default(Joi.ref('name')),
   name: Joi.string().required(),
-  layers: projectLayersSchema
+  layers: projectGroupedLayersSchema
 })
 
-const projectLayerGroupsSchema = Joi.array().items(projectLayerGroupSchema)
+const projectLayerGroupsSchema = Joi.array().items(projectLayerGroupSchema).unique('name')
 
 /**
  * @typedef {Object} ProjectConfigObject
