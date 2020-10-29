@@ -9,7 +9,8 @@ export const GeometrySupportedTypes = Object.freeze([
 ])
 export const Services = Object.freeze({
   wfs: 'wfs',
-  wms: 'wms'
+  wms: 'wms',
+  wmts: 'wmts'
 })
 export const DrawerTabs = Object.freeze({
   LAYERS: 0,

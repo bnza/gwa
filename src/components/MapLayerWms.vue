@@ -5,7 +5,7 @@
     :id="config.id"
     extent-projection="EPSG:4326"
   >
-    <map-source-image-wms :tiled="true" :config="config" />
+    <map-source-image-wms :config="config" />
   </vl-layer-tile>
 </template>
 

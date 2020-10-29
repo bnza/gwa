@@ -2,6 +2,7 @@ import { filter, map, keys, find, has, mergeRight, __ } from 'ramda'
 import { Either } from 'monet'
 import { getLayerInfo as getWmsInfo } from '@/modules/server/service/wms/capabilities'
 import { getLayerInfo as getWfsInfo } from '@/modules/server/service/wfs/capabilities'
+import { getLayerInfo as getWmtsInfo } from '@/modules/server/service/wmts/capabilities'
 import { Services } from '@/common/constants'
 
 /**
@@ -83,7 +84,11 @@ export default {
   getLayerInfo: (state, getters, rootState, rootGetters) => id => {
     const { server, name, type } = getters.getConfig(id)
     const infos = rootGetters['server/capabilities/getLayersInfos'](server, type)
-    const functions = { [Services.wms]: getWmsInfo, [Services.wfs]: getWfsInfo }
+    const functions = {
+      [Services.wms]: getWmsInfo,
+      [Services.wfs]: getWfsInfo,
+      [Services.wmts]: getWmtsInfo
+    }
     return infos.flatMap(_infos => functions[type](name, _infos))
   },
   /**

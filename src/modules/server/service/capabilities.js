@@ -1,6 +1,6 @@
 import xml2js from 'xml2js'
 import { Right, Left } from 'monet'
-import { head, keys, prop, toPairs, find, values, map } from 'ramda'
+import { head, keys, prop, toPairs, find, values, map, concat, split } from 'ramda'
 import { GetCapabilitiesRootElements } from '@/common/constants/operations'
 /**
  * @typedef {import('monet').Either} Either
@@ -22,6 +22,26 @@ import { GetCapabilitiesRootElements } from '@/common/constants/operations'
 export const normalizeBboxObject = rawBbox => {
   const bbox = prop('$', rawBbox)
   return map(Number, [bbox.minx, bbox.miny, bbox.maxx, bbox.maxy])
+}
+
+/**
+ * {
+ *   "ows:LowerCorner": ["-74.047185 40.679648"],
+ *   "ows:UpperCorner": ["-74.047185 40.679648"],
+ * }
+ * @param {{'ows:LowerCorner': Array<string>, 'ows:UpperCorner': Array<string>}}rawBbox
+ * @return {ExtentArray}
+ */
+export const normalizeBboxOws = rawBbox => {
+  return map(
+    Number,
+    concat(
+      ...map(
+        key => split(' ', headProp(key, rawBbox)),
+        ['ows:LowerCorner', 'ows:UpperCorner']
+      )
+    )
+  )
 }
 
 /**

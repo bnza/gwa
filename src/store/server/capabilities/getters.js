@@ -3,6 +3,7 @@ import { Either } from 'monet'
 import { Services } from '@/common/constants'
 import { getFeatureType, getFeatureTypeList } from '@/modules/server/service/wfs/capabilities'
 import { getLayersInfos as getWmsInfos } from '@/modules/server/service/wms/capabilities'
+import { getLayersInfos as getWmtsInfo } from '@/modules/server/service/wmts/capabilities'
 
 const getService = (state, name, service) => {
   if (!has(service, Services)) {
@@ -39,7 +40,8 @@ export default {
   getLayersInfos: (state) => (serverName, serviceName) => {
     const mapper = {
       [Services.wfs]: getFeatureTypeList,
-      [Services.wms]: getWmsInfos
+      [Services.wms]: getWmsInfos,
+      [Services.wmts]: getWmtsInfo
     }
     return getService(state, serverName, serviceName).map(mapper[serviceName])
   }

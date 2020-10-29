@@ -39,7 +39,7 @@ export const layerSchema = Joi.object({
   server: Joi.string().default('default'),
   type: Joi.string()
     .required()
-    .valid('wfs', 'wms'),
+    .valid('wfs', 'wms', 'wmts'),
   visible: Joi.boolean().default(true),
   group: Joi.string().default('default'),
   crs: Joi.string()
@@ -58,6 +58,13 @@ export const wmsLayerSchema = layerSchema.append({
     .required()
     .default('wms')
     .valid('wms')
+})
+
+export const wmtsLayerSchema = layerSchema.append({
+  type: Joi.string()
+    .required()
+    .default('wmts')
+    .valid('wmts')
 })
 
 const serverMustExistConstraint = {
@@ -81,7 +88,8 @@ const groupNameReferenceConstraint = {
 const projectLayersSchema = Joi.array()
   .items(
     wfsLayerSchema.append(serverMustExistConstraint),
-    wmsLayerSchema.append(serverMustExistConstraint)
+    wmsLayerSchema.append(serverMustExistConstraint),
+    wmtsLayerSchema.append(serverMustExistConstraint)
   )
   .unique('id')
   .min(1)
@@ -89,7 +97,8 @@ const projectLayersSchema = Joi.array()
 const projectGroupedLayersSchema = Joi.array()
   .items(
     wfsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint)),
-    wmsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint))
+    wmsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint)),
+    wmtsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint))
   )
   .unique('id')
   .min(1)
@@ -123,9 +132,17 @@ export const serverWmsServicesSchema = Joi.object({
     .allow('1.1.0', '1.3.0')
 })
 
+export const serverWmtsServicesSchema = Joi.object({
+  path: Joi.string().default('gwc/service/wmts'),
+  version: Joi.string()
+    .default('1.0.0')
+    .allow('1.0.0')
+})
+
 export const serverServicesSchema = Joi.object({
   wfs: serverWfsServicesSchema.default(),
-  wms: serverWmsServicesSchema.default()
+  wms: serverWmsServicesSchema.default(),
+  wmts: serverWmtsServicesSchema.default()
 })
 
 /**

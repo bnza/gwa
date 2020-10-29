@@ -6,6 +6,8 @@ export const WMS_VERSION_110 = '1.1.0'
 export const WMS_VERSION_111 = '1.1.1'
 export const WMS_VERSION_130 = '1.3.0'
 
+export const WMTS_VERSION_100 = '1.0.0'
+
 /**
  * @readonly {string}
  * @enum
@@ -26,7 +28,16 @@ export const WmsVersions = Object.freeze({
   v130: WMS_VERSION_130
 })
 
+/**
+ * @readonly {string}
+ * @enum
+ */
+export const WmtsVersions = Object.freeze({
+  v100: WMTS_VERSION_100
+})
+
 export const Versions = Object.freeze({
   wms: WmsVersions,
-  wfs: WfsVersions
+  wfs: WfsVersions,
+  wmts: WmtsVersions
 })
