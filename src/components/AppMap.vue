@@ -35,7 +35,7 @@ import ProjectConfigMx from '@/mixins/ProjectConfigMx'
 import MapLayerGroup from '@/components/MapLayerGroup'
 import MapLayerInteractionSelectWfs from '@/components/MapLayerInteractionSelectWfs'
 import { ViewMutations, LayerMutations } from '@/common/constants/mutations'
-import { SET_VISIBLE_TAB } from '@/store/components/AppNavigationDrawer'
+import { SET_VISIBLE, SET_VISIBLE_TAB } from '@/store/components/AppNavigationDrawer'
 import { SET_COORDS } from '@/store/components/AppMap'
 import { DrawerTabs } from '@/common/constants'
 
@@ -72,6 +72,7 @@ export default {
     },
     setSelectedFeature (selected) {
       this.$store.commit(`layers/${LayerMutations.SET_SELECTED_FEATURE}`, selected)
+      this.$store.commit(`components/AppNavigationDrawer/${SET_VISIBLE}`, true)
       this.$store.commit(`components/AppNavigationDrawer/${SET_VISIBLE_TAB}`, DrawerTabs.ITEM)
     },
     storePointerCoords ({ coordinate }) {
