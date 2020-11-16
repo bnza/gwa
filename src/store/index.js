@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import baseMaps from './baseMaps'
 import client from './client'
 import config from './config'
 import server from './server'
@@ -19,6 +20,7 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules: {
+    baseMaps,
     client,
     config,
     server,

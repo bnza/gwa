@@ -203,6 +203,20 @@ const projectLayerGroupSchema = Joi.object({
 
 const projectLayerGroupsSchema = Joi.array().items(projectLayerGroupSchema).unique('name')
 
+const baseMapsSchema = Joi.object({
+  active: Joi.string().valid('osm', 'bing').optional(),
+  osm: Joi.boolean().default(true),
+  bing: Joi.object({
+    culture: Joi.string().default('en-us'),
+    imagerySet: Joi.string().valid(
+      'RoadOnDemand',
+      'Aerial',
+      'AerialWithLabelsOnDemand',
+      'CanvasDark').default('AerialWithLabelsOnDemand'),
+    apiKey: Joi.string().required()
+  }).optional()
+})
+
 /**
  * @typedef {Object} ProjectConfigObject
  * @property {string} title - The project title
@@ -232,5 +246,6 @@ export const projectSchema = Joi.object({
   view: viewSchema.default(),
   servers: serversSchema,
   layers: projectLayersSchema,
-  groupLayers: projectLayerGroupsSchema
+  groupLayers: projectLayerGroupsSchema,
+  baseMaps: baseMapsSchema.default()
 }).or('layers', 'groupLayers')

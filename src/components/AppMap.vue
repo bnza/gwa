@@ -14,9 +14,7 @@
       :center.sync="center"
       :rotation.sync="rotation"
     />
-    <vl-layer-tile id="osm">
-      <vl-source-osm />
-    </vl-layer-tile>
+    <map-base-maps :state="$store.state.baseMaps" />
     <map-layer-group id="default" />
     <map-layer-group
       v-for="group in groupLayers"
@@ -32,6 +30,7 @@
 import { mapState, mapGetters } from 'vuex'
 import { getMapIntPixelHeight } from '@/modules/utils'
 import ProjectConfigMx from '@/mixins/ProjectConfigMx'
+import MapBaseMaps from '@/components/MapBaseMaps'
 import MapLayerGroup from '@/components/MapLayerGroup'
 import MapLayerInteractionSelectWfs from '@/components/MapLayerInteractionSelectWfs'
 import { ViewMutations, LayerMutations } from '@/common/constants/mutations'
@@ -43,6 +42,7 @@ export default {
   name: 'AppMap',
   mixins: [ProjectConfigMx],
   components: {
+    MapBaseMaps,
     MapLayerGroup,
     MapLayerInteractionSelectWfs
   },

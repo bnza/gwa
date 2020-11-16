@@ -54,6 +54,15 @@ export const ViewMutations = Object.freeze({
   CLEAR_EXTENT
 })
 
+export const SET_OSM = 'setOsm'
+export const SET_BING = 'setBing'
+
+export const BaseMapsMutations = Object.freeze({
+  SET_ACTIVE,
+  SET_OSM,
+  SET_BING
+})
+
 export const Mutations = Object.freeze({
   ClientMutations,
   ConfigMutations,

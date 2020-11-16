@@ -17,5 +17,8 @@ export const DrawerTabs = Object.freeze({
   TABLE: 1,
   ITEM: 2
 })
-
+export const BaseMaps = Object.freeze({
+  OSM: 'osm',
+  BING: 'bing'
+})
 export const ITEMS_PER_PAGE = 25
