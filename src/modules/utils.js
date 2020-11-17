@@ -32,6 +32,16 @@ export const getTableIntPixelHeight = /* @__PURE__ */ innerHeight => {
  * @return {number} the map height in pixel
  * @private
  */
+export const getDialogTableIntPixelHeight = /* @__PURE__ */ innerHeight => {
+  return innerHeight - (drawerTabsHeight + tableTitleHeight + tableHeadersHeight)
+}
+
+/**
+ * Return the map height in pixel
+ * @param innerHeight
+ * @return {number} the map height in pixel
+ * @private
+ */
 export const getFormIntPixelHeight = /* @__PURE__ */ innerHeight => {
   return innerHeight - (mainToolbarHeight + drawerTabsHeight + tableTitleHeight + tableHeadersHeight + tableSubTitleHeight + tableFooterHeight)
 }

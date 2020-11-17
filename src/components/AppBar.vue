@@ -14,9 +14,9 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn v-if="hasMoreInfo" icon>
+<!--    <v-btn v-if="hasMoreInfo" icon>
       <v-icon>mdi-info</v-icon>
-    </v-btn>
+    </v-btn>-->
   </v-app-bar>
 </template>
 

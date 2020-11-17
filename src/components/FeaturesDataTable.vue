@@ -38,7 +38,7 @@
 
 <script>
 import { ITEMS_PER_PAGE } from '@/common/constants'
-import { getTableIntPixelHeight } from '@/modules/utils'
+import { getTableIntPixelHeight, getDialogTableIntPixelHeight } from '@/modules/utils'
 import FeaturesDataTableHeaders from '@/components/FeaturesDataTableHeaders'
 export default {
   name: 'FeaturesDataTable',
@@ -52,6 +52,12 @@ export default {
     }
   },
   props: {
+    dialog: {
+      type: Boolean,
+      default () {
+        return false
+      }
+    },
     type: {
       type: Object,
       required: true
@@ -83,7 +89,13 @@ export default {
   },
   methods: {
     onResize () {
-      this.height = `${getTableIntPixelHeight(window.innerHeight)}px`
+      const fn = this.dialog ? getDialogTableIntPixelHeight : getTableIntPixelHeight
+      this.height = `${fn(window.innerHeight)}px`
+    }
+  },
+  watch: {
+    dialog: {
+      handler: 'onResize'
     }
   },
   created () {
