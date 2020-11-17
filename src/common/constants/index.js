@@ -7,6 +7,12 @@ export const GeometrySupportedTypes = Object.freeze([
   'MultiPolygon',
   'GeometryCollection'
 ])
+
+export const ScalarSupportedTypes = Object.freeze([
+  'string',
+  'number'
+])
+
 export const Services = Object.freeze({
   wfs: 'wfs',
   wms: 'wms',

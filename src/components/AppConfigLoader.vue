@@ -32,6 +32,7 @@
 export default {
   name: 'AppConfigLoader',
   created () {
+    this.$store.dispatch('layers/query/setUpParameters')
     this.$store.dispatch('config/loadConfig')
   }
 }

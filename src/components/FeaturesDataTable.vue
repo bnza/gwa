@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { mergeRight } from 'ramda'
 import { ITEMS_PER_PAGE } from '@/common/constants'
 import { getTableIntPixelHeight, getDialogTableIntPixelHeight } from '@/modules/utils'
 import FeaturesDataTableHeaders from '@/components/FeaturesDataTableHeaders'
@@ -83,6 +84,7 @@ export default {
         return this.dataOptions
       },
       set (options) {
+        options = mergeRight(this.dataOptions, options)
         this.$emit('update:dataOptions', options)
       }
     }

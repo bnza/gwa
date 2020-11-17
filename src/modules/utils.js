@@ -33,7 +33,7 @@ export const getTableIntPixelHeight = /* @__PURE__ */ innerHeight => {
  * @private
  */
 export const getDialogTableIntPixelHeight = /* @__PURE__ */ innerHeight => {
-  return innerHeight - (drawerTabsHeight + tableTitleHeight + tableHeadersHeight)
+  return innerHeight - (mainToolbarHeight + drawerTabsHeight + tableTitleHeight + tableHeadersHeight)
 }
 
 /**

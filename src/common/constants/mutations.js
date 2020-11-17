@@ -28,6 +28,15 @@ export const ServerMutations = Object.freeze({
   CapabilitiesMutations
 })
 
+export const SET_SERVICE = 'setService'
+export const SET_OPERATION = 'setOperation'
+export const SET_PARAMETERS = 'setParameters'
+export const LayersQueryMutations = Object.freeze({
+  SET_SERVICE,
+  SET_OPERATION,
+  SET_PARAMETERS
+})
+
 export const SET_LAYER_STATE = 'setLayerState'
 export const SET_PROP = 'setProp'
 export const TOGGLE_PROP = 'toggleProp'
@@ -37,6 +46,7 @@ export const SET_SELECTED_FEATURE = 'setSelectedFeature'
 export const CLEAR_SELECTED_FEATURE = 'clearSelectedFeature'
 
 export const LayerMutations = Object.freeze({
+  Query: LayersQueryMutations,
   SET_LAYER_STATE,
   SET_PROP,
   TOGGLE_PROP,
@@ -67,5 +77,7 @@ export const Mutations = Object.freeze({
   ClientMutations,
   ConfigMutations,
   LayerMutations,
-  ServerMutations
+  ServerMutations,
+  ViewMutations,
+  BaseMapsMutations
 })

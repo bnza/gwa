@@ -2,7 +2,7 @@
   <v-card v-if="getFeatureType.isLeft" flat>
     <p><span><v-icon color="yellow darken-2">warning</v-icon>{{ getFeatureType.left() }}</span></p>
   </v-card>
-  <component :is="containerComponent" v-else :value.sync="dialog" flat>
+  <component :is="containerComponent" v-else :value.sync="tableDialog" flat>
     <features-data-loader
       :type="type"
       :data="data"
@@ -10,7 +10,7 @@
       :data-options="dataOptions"
     />
     <v-row>
-      <v-card-title>{{ type.title }}</v-card-title>
+      <v-card-title>{{ type.title }}<span v-if="dataOptions.filter.length" class="pl-6 text-subtitle-2 font-weight-light grey--text">(filtered)</span></v-card-title>
       <v-spacer/>
       <v-card-title>
         <span>
@@ -21,9 +21,9 @@
                 color="primary"
                 v-bind="attrs"
                 v-on="on"
-                @click="dialog=!dialog"
+                @click="tableDialog=!tableDialog"
               >
-              <v-icon>{{dialog ? 'fullscreen_exit' : 'fullscreen'}}</v-icon>
+              <v-icon>{{ tableDialog ? 'fullscreen_exit' : 'fullscreen' }}</v-icon>
             </v-btn>
           </template>Toggle fullscreen
         </v-tooltip>
@@ -36,6 +36,7 @@
                 color="primary"
                 v-bind="attrs"
                 v-on="on"
+                @click="filterDialog = true"
               >
             <v-icon>filter_alt</v-icon>
             </v-btn>
@@ -44,8 +45,13 @@
         </span>
       </v-card-title>
     </v-row>
+    <features-filter-dialog
+      :value.sync="filterDialog"
+      :type="type"
+      :data-options.sync="dataOptions"
+    />
     <features-data-table
-      :dialog="dialog"
+      :dialog="tableDialog"
       :type="type"
       :features-response="featuresResponse"
       :data-options.sync="dataOptions"
@@ -56,31 +62,38 @@
 
 <script>
 import { identity, clone } from 'ramda'
-import { ViewMutations } from '@/common/constants/mutations'
+import { ViewMutations, LayersQueryMutations } from '@/common/constants/mutations'
 import { GeoJSON } from 'ol/format'
 import { mapGetters, mapMutations } from 'vuex'
-import { ITEMS_PER_PAGE } from '@/common/constants'
+import { ITEMS_PER_PAGE, Services } from '@/common/constants'
+import { WfsOperations } from '@/common/constants/operations'
+import FeaturesFilterDialog from '@/components/FeaturesFilterDialog'
 import FeaturesFullScreenDialog from '@/components/FeaturesFullScreenDialog'
 import FeaturesDataLoader from '@/components/FeaturesDataLoader'
 import FeaturesDataTable from '@/components/FeaturesDataTable'
 
+const defaultDataOptions = () => {
+  return {
+    page: 1,
+    itemsPerPage: ITEMS_PER_PAGE,
+    sortBy: [],
+    sortDesc: [false],
+    filter: []
+  }
+}
 export default {
   name: 'FeaturesDataCard',
   components: {
+    FeaturesFilterDialog,
     FeaturesDataLoader,
     FeaturesDataTable,
     FeaturesFullScreenDialog
   },
   data () {
     return {
-      dialog: false,
-      featuresResponse: {},
-      dataOptions: {
-        page: 1,
-        itemsPerPage: ITEMS_PER_PAGE,
-        sortBy: [],
-        sortDesc: [false]
-      }
+      tableDialog: false,
+      filterDialog: false,
+      featuresResponse: {}
     }
   },
   props: {
@@ -95,6 +108,21 @@ export default {
       getLayer: 'get',
       getLayerConfig: 'getConfig'
     }),
+    ...mapGetters('layers/query', {
+      getQueryParameters: 'getParameters'
+    }),
+    dataOptions: {
+      get () {
+        return this.getQueryParameters({
+          service: Services.wfs,
+          operation: WfsOperations.GET_FEATURE,
+          id: this.id
+        }) || defaultDataOptions()
+      },
+      set (data) {
+        this.setGetFeaturesQueryParameters(data)
+      }
+    },
     eitherType () {
       return this.getFeatureType(this.id)
     },
@@ -106,13 +134,24 @@ export default {
       return this.getLayer(this.getLayerConfig(this.id))
     },
     containerComponent () {
-      return this.dialog ? 'FeaturesFullScreenDialog' : 'VCard'
+      return this.tableDialog ? 'FeaturesFullScreenDialog' : 'VCard'
     }
   },
   methods: {
     ...mapMutations('view', {
       setViewExtent: ViewMutations.SET_EXTENT
     }),
+    ...mapMutations('layers/query', {
+      setQueryParameters: LayersQueryMutations.SET_PARAMETERS
+    }),
+    setGetFeaturesQueryParameters (parameters) {
+      this.setQueryParameters({
+        service: Services.wfs,
+        operation: WfsOperations.GET_FEATURE,
+        id: this.id,
+        parameters
+      })
+    },
     fitViewExtent (geoJsonFeature) {
       const feature = (new GeoJSON()).readFeature(geoJsonFeature)
       const geom = clone(feature.getGeometry())

@@ -7,6 +7,21 @@
     transition="dialog-bottom-transition"
   >
     <v-card flat>
+      <v-toolbar
+        dense
+        dark
+        flat
+        color="primary"
+      >
+        <v-btn
+          icon
+          dark
+          @click="dialog = false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title>Attribute table</v-toolbar-title>
+      </v-toolbar>
       <slot />
     </v-card>
   </v-dialog>
@@ -19,6 +34,16 @@ export default {
     value: {
       type: Boolean,
       required: true
+    }
+  },
+  computed: {
+    dialog: {
+      get () {
+        return this.value
+      },
+      set (flag) {
+        this.$emit('update:value', flag)
+      }
     }
   }
 }

@@ -28,3 +28,12 @@ export const WfsOperations = Object.freeze({
   GET_FEATURE,
   DESCRIBE_FEATURE_TYPE
 })
+
+export const WmsOperations = Object.freeze({})
+export const WmtsOperations = Object.freeze({})
+
+export const Operations = Object.freeze({
+  [Services.wfs]: WfsOperations,
+  [Services.wms]: WmsOperations,
+  [Services.wmts]: WmtsOperations
+})

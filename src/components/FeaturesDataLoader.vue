@@ -1,9 +1,10 @@
 <script>
 import { WFS } from 'ol/format'
 import { mapActions } from 'vuex'
-import { identity, mergeRight } from 'ramda'
+import { identity, mergeAll } from 'ramda'
 import { ITEMS_PER_PAGE } from '@/common/constants'
 import { addSortByToQueryNode } from '@/modules/server/service/wfs/operations/GetFeature'
+import { generateAndFilter } from '@/modules/server/service/wfs/operations/filters'
 
 export default {
   name: 'FeatureDataLoader',
@@ -50,19 +51,28 @@ export default {
         propertyName,
         sortOrder
       }
-    }
-  },
-  methods: {
-    ...mapActions('client', ['fetch']),
-    async loader (extent, projection, resolution) {
+    },
+    filter () {
+      return {
+        filter: this.dataOptions.filter ? generateAndFilter(this.dataOptions.filter) : null
+      }
+    },
+    parameters () {
       const [ns, name] = this.data.config.name.split(':')
-      let featureRequest = this.wfsFormat.writeGetFeature(mergeRight(
+      return mergeAll([
+        this.filter,
         this.pagination,
         {
           featurePrefix: ns,
           featureTypes: [name],
           outputFormat: 'application/json'
-        }))
+        }])
+    }
+  },
+  methods: {
+    ...mapActions('client', ['fetch']),
+    async loader (extent, projection, resolution) {
+      let featureRequest = this.wfsFormat.writeGetFeature(this.parameters)
       if (this.sortBy) {
         featureRequest = addSortByToQueryNode(featureRequest, this.sortBy)
       }
@@ -84,10 +94,10 @@ export default {
   render: () => null,
   watch: {
     id: {
-      handler: function () { this.update() }
+      handler: 'update'
     },
     dataOptions: {
-      handler: function () { this.update() }
+      handler: 'update'
     }
   },
   created () {

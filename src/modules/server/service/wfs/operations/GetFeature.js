@@ -33,6 +33,10 @@ import { getServerServiceOperationUrl } from '@/modules/server/service/operation
  */
 
 /**
+ * @typedef {import('ol/format/filter/Filter').default} Filter
+ */
+
+/**
  *
  * @param {WfsGetFeatureOperationOptions} options
  * @return {WfsGetFeatureRequestParametersObject}
@@ -117,4 +121,13 @@ const writeSortByNode = (node, sortBy) => {
 
 export const addSortByToQueryNode = (getFeature, pagination) => {
   return writeSortByNode(getFeature, pagination)
+}
+
+/**
+ * Converts ol Filter object into array
+ * @param {Filter} filter
+ * @return {*[]}
+ */
+export const denormalizeFilter = (filter) => {
+  return []
 }

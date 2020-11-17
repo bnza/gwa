@@ -2,6 +2,7 @@ import { None } from 'monet'
 import mutations from './mutations'
 import getters from './getters'
 import actions from './actions'
+import query from './query'
 
 /**
  *
@@ -33,5 +34,8 @@ export default {
   state,
   mutations,
   getters,
-  actions
+  actions,
+  modules: {
+    query
+  }
 }

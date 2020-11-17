@@ -1,5 +1,6 @@
 <template>
     <vl-source-vector
+      ref="vlSource"
       v-if="projectionReady"
       :attributions="data.config.attributions"
       :attributions-collapsible="true"
@@ -11,15 +12,16 @@
 
 <script>
 import { WFS } from 'ol/format'
-import { bbox as bboxFilter } from 'ol/format/filter'
 import { bbox as bboxStrategy } from 'ol/loadingstrategy'
 import { get as getProj } from 'ol/proj'
 import { registerProjection } from '@/modules/projections'
 import { always, prop, identity } from 'ramda'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { Services } from '@/common/constants'
+import { generateBboxFilter } from '@/modules/server/service/wfs/operations/filters'
 import WfsLayerMx from '@/mixins/WfsLayerMx'
 import ProjectConfigMx from '@/mixins/ProjectConfigMx'
+import { WfsOperations } from '@/common/constants/operations'
 
 export default {
   name: 'MapVectorSourceWfs',
@@ -34,26 +36,40 @@ export default {
   data () {
     return {
       projectionReady: false,
-      wfsFormat: null
+      wfsFormat: null,
+      loaderParams: [],
+      features: []
     }
   },
   computed: {
+    ...mapGetters('layers/query', {
+      getQueryParameters: 'getParameters'
+    }),
     loadingStrategy () {
       return bboxStrategy
     },
     projection () {
       return this.featureType.cata(always(''), prop('projection'))
+    },
+    filters () {
+      const parameters = this.getQueryParameters({
+        service: Services.wfs,
+        operation: WfsOperations.GET_FEATURE,
+        id: this.config.id
+      })
+      return parameters ? parameters.filter : []
     }
   },
   methods: {
     ...mapActions('client', ['fetch']),
     async loader (extent, projection, resolution) {
+      this.loaderParams = arguments
       const [ns, name] = this.data.config.name.split(':')
       const featureRequest = this.wfsFormat.writeGetFeature({
         featurePrefix: ns,
         featureTypes: [name],
         outputFormat: 'application/json',
-        filter: bboxFilter(this.geometryName, extent, this.projection)
+        filter: generateBboxFilter(this.filters, this.geometryName, extent, this.projection) // bboxFilter(this.geometryName, extent, this.projection)
       })
       const data = await this.fetch(
         {
@@ -79,6 +95,12 @@ export default {
         this.projectionReady = true
       },
       immediate: true
+    },
+    filters: {
+      handler: function (filters, old) {
+        this.$refs.vlSource.clear()
+        this.$refs.vlSource.wrapLoaderFunc(this.loader)(...this.loaderParams)
+      }
     }
   },
   created () {
