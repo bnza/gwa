@@ -1,5 +1,7 @@
 <script>
+import { forEach } from 'ramda'
 import { mapGetters, mapState } from 'vuex'
+import { registerProjection } from '@/modules/projections'
 
 export default {
   name: 'AppConfigManager',
@@ -10,6 +12,7 @@ export default {
   render: () => null,
   created () {
     document.title = this.config.title
+    forEach(registerProjection, this.config.projections)
     this.$store.dispatch('baseMaps/setConfig', this.config.baseMaps)
     this.$store.dispatch('server/capabilities/loadServersCapabilities').then(
       () => {
