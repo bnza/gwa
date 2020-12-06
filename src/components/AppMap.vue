@@ -15,13 +15,13 @@
       :rotation.sync="rotation"
     />
     <map-base-maps :state="$store.state.baseMaps" />
-    <map-layer-group id="default" />
     <map-layer-group
       v-for="group in groupLayers"
       :key="group.id"
       :id="group.name"
       :name="group.name"
       />
+    <map-layer-group id="default" />
     <map-layer-interaction-select-wfs v-if="activeLayer" :active-layer="activeLayer" @select="setSelectedFeature"/>
   </vl-map>
 </template>
