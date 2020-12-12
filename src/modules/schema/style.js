@@ -18,8 +18,6 @@ export const styleStrokeSchema = Joi.object({
 export const styleImageStyleSchema = Joi.object({})
 
 export const styleImageVectorStyleSchema = styleImageStyleSchema.append({
-  stroke: styleStrokeSchema.default(),
-  fill: styleFillSchema.default(),
   radius: Joi.number().default(5)
 })
 
@@ -30,22 +28,19 @@ export const styleRegularShapeImageSchema = styleImageVectorStyleSchema.append({
     .integer()
     .min(3)
     .default(4),
-  radius1: Joi.number()
+  angle: Joi.number()
+    .default(0),
+  radius2: Joi.number()
     .integer()
-    .default(7),
-  radius2: Joi.number().integer()
+    .min(
+      Joi.ref('radius', {
+        adjust: value => value + 1
+      })
+    )
 })
 
 export const styleSchema = Joi.object({
   fill: styleFillSchema.default(),
   stroke: styleStrokeSchema.default(),
-  image: Joi.object()
-    .valid(styleCircleImageSchema, styleRegularShapeImageSchema)
-    .default(parent => {
-      return {
-        fill: parent.fill,
-        stroke: parent.stroke,
-        radius: 5
-      }
-    })
+  image: Joi.alternatives().try(styleCircleImageSchema, styleRegularShapeImageSchema)
 })
