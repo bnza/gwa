@@ -9,41 +9,50 @@
       :features-response.sync="featuresResponse"
       :data-options="dataOptions"
     />
-    <v-row>
-      <v-card-title>{{ type.title }}<span v-if="dataOptions.filter.length" class="pl-6 text-subtitle-2 font-weight-light grey--text">(filtered)</span></v-card-title>
-      <v-spacer/>
-      <v-card-title>
-        <span>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                icon
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                @click="tableDialog=!tableDialog"
-              >
-              <v-icon>{{ tableDialog ? 'fullscreen_exit' : 'fullscreen' }}</v-icon>
-            </v-btn>
-          </template>Toggle fullscreen
-        </v-tooltip>
-      </span>
-        <span>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                icon
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                @click="filterDialog = true"
-              >
-            <v-icon>filter_alt</v-icon>
-            </v-btn>
-          </template>Filter features
-        </v-tooltip>
+    <v-row no-gutters>
+      <v-col class="col-sm-7">
+        <layer-card-title-tooltip :label="data.config.label" :title="type.title" />
+      </v-col>
+      <v-col v-if="dataOptions.filter.length" class="col-sm-2">
+        <v-card-title>
+          <span class="pl-6 text-subtitle-2 font-weight-light grey--text">(filtered)</span>
+        </v-card-title>
+      </v-col>
+      <v-spacer v-else />
+      <v-col class="col-sm-3">
+        <v-card-title style="flex-wrap: nowrap; white-space: nowrap;">
+          <span>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  color="primary"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="tableDialog=!tableDialog"
+                >
+                <v-icon>{{ tableDialog ? 'fullscreen_exit' : 'fullscreen' }}</v-icon>
+              </v-btn>
+            </template>Toggle fullscreen
+          </v-tooltip>
         </span>
-      </v-card-title>
+          <span>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  color="primary"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="filterDialog = true"
+                >
+              <v-icon>filter_alt</v-icon>
+              </v-btn>
+            </template>Filter features
+          </v-tooltip>
+          </span>
+        </v-card-title>
+      </v-col>
     </v-row>
     <features-filter-dialog
       :value.sync="filterDialog"
@@ -71,6 +80,7 @@ import FeaturesFilterDialog from '@/components/FeaturesFilterDialog'
 import FeaturesFullScreenDialog from '@/components/FeaturesFullScreenDialog'
 import FeaturesDataLoader from '@/components/FeaturesDataLoader'
 import FeaturesDataTable from '@/components/FeaturesDataTable'
+import LayerCardTitleTooltip from '@/components/LayerCardTitleTooltip'
 
 const defaultDataOptions = () => {
   return {
@@ -87,7 +97,8 @@ export default {
     FeaturesFilterDialog,
     FeaturesDataLoader,
     FeaturesDataTable,
-    FeaturesFullScreenDialog
+    FeaturesFullScreenDialog,
+    LayerCardTitleTooltip
   },
   data () {
     return {
@@ -160,7 +171,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

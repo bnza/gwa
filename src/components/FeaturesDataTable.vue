@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="miao">
     <features-data-table-headers :type="type" :headers.sync="headers" />
     <v-data-table
       :headers="headers"
@@ -111,6 +111,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  @import "src/sass/variables.scss";
 
+  ::v-deep tbody td {
+    font-family: $mono-font-family;
+    font-size: 0.75rem !important;
+  }
 </style>

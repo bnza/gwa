@@ -6,12 +6,12 @@
     <v-card-text>No selected feature</v-card-text>
   </v-card>
   <v-card v-else flat>
-    <v-card-title>{{ featureType.title }}</v-card-title>
+    <layer-card-title-tooltip :label="config.label" :title="featureType.title" />
     <v-card-subtitle>{{ selectedFeature.feature.id }}</v-card-subtitle>
     <v-form readonly :style="cssVars">
       <v-container>
         <v-row v-for="(value, name) in selectedFeature.feature.properties" :key="name" justify="center">
-          <v-col cols="1" md="11">
+          <v-col class="col-md-11 col-sm-12">
             <component
               :is="getComponent(value, name)"
               :value="value"
@@ -30,9 +30,13 @@ import { mapState, mapGetters } from 'vuex'
 import { VTextarea, VTextField } from 'vuetify/lib'
 import { Either } from 'monet'
 import { getFormIntPixelHeight } from '@/modules/utils'
+import LayerCardTitleTooltip from '@/components/LayerCardTitleTooltip'
 
 export default {
   name: 'FeatureDataCard',
+  components: {
+    LayerCardTitleTooltip
+  },
   data () {
     return {
       height: '500px'
@@ -40,7 +44,10 @@ export default {
   },
   computed: {
     ...mapState('layers', { selectedFeatureMaybe: 'selectedFeature' }),
-    ...mapGetters('layers', ['getFeatureType']),
+    ...mapGetters('layers', ['getFeatureType', 'getConfig']),
+    config () {
+      return this.selectedFeatureMaybe.map(selected => this.getConfig(selected.layer)).some()
+    },
     selectedFeature () {
       return this.selectedFeatureMaybe.some()
     },
@@ -86,5 +93,12 @@ export default {
   >>> form {
     height: var(--height);
     overflow-y: scroll;
+  }
+
+  >>> .v-card__title {
+    padding-bottom: 0;
+  }
+  >>> .v-card__subtitle {
+    padding-top: 0;
   }
 </style>
