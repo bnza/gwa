@@ -9,14 +9,15 @@
       :features-response.sync="featuresResponse"
       :data-options="dataOptions"
     />
-    <v-row no-gutters>
+    <v-row
+      no-gutters
+      align="center"
+    >
       <v-col class="col-sm-7">
         <layer-card-title-tooltip :label="data.config.label" :title="type.title" />
       </v-col>
       <v-col v-if="dataOptions.filter.length" class="col-sm-2">
-        <v-card-title>
-          <span class="pl-6 text-subtitle-2 font-weight-light grey--text">(filtered)</span>
-        </v-card-title>
+        <p class="light-small font-weight-light grey--text">(filtered)</p>
       </v-col>
       <v-spacer v-else />
       <v-col class="col-sm-3">
@@ -171,3 +172,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .light-small {
+    font-size: 0.75rem;
+    margin-bottom: 0;
+  }
+</style>
