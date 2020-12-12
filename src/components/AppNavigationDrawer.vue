@@ -1,5 +1,12 @@
 <template>
-  <v-navigation-drawer app width="400" clipped hide-overlay :value="visible">
+  <v-navigation-drawer
+    mobile-breakpoint="600"
+    app
+    :width="$vuetify.breakpoint.mdAndDown ? 300 : 400"
+    clipped
+    hide-overlay
+    :value="visible"
+  >
     <v-card flat>
       <v-tabs v-model="currentTab" @change="setActiveTab(DrawerTabs.LAYERS)" icons-and-text>
         <v-tab>
