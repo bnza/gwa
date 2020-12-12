@@ -238,7 +238,7 @@ export const projectSchema = Joi.object({
   title: Joi.string().required(),
   description: Joi.string(),
   moreInfoUrl: urlSchema,
-  projections: Joi.array().items(projectionSchema),
+  projections: Joi.array().items(projectionSchema).default([]),
   dataProjection: Joi.string()
     .default('EPSG:3857')
     .regex(/EPSG:{1,2}\d+$/)
