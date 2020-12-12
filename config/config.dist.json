@@ -1,0 +1,75 @@
+{
+  "title": "gwaTitle",
+  "description": "The test client",
+  "dataProjection": "EPSG:26714",
+  "projections": [
+    {
+      "code": "EPSG:26714",
+      "def": "+proj=utm +zone=14 +datum=NAD27 +units=m +no_defs "
+    }
+  ],
+  "view": {
+    "center": [-11560592.76, 5526675.11],
+    "zoom": 10
+  },
+  "servers": [
+    {
+      "baseUrl": "http://localhost:8585/geoserver"
+    },
+    {
+      "name": "wrong",
+      "baseUrl": "http://localhost:8586/geoserver"
+    }
+  ],
+  "layers": [
+    {
+      "type": "wmts",
+      "name": "sf:sfdem"
+    },
+    {
+      "type": "wfs",
+      "name": "topp:states",
+      "style": {
+        "stroke": {
+          "color": "BBBBBB",
+          "width": 9
+        },
+        "fill": {
+          "color": "AAAAAA"
+        }
+      }
+    },
+    {
+      "type": "wfs",
+      "name": "topp:tasmania_cities"
+    },
+    {
+      "type": "wms",
+      "name": "nurc:mosaic"
+    }
+  ],
+  "groupLayers": [
+    {
+      "name": "manhattan",
+      "label": "Manhattan",
+      "layers": [
+        {
+          "type": "wfs",
+          "name": "tiger:poi"
+        },
+        {
+          "type": "wfs",
+          "name": "tiger:tiger_roads"
+        }
+      ]
+    }
+  ],
+  "baseMaps": {
+    "active": "bing",
+    "osm": true,
+    "bing": {
+      "apiKey": "your-api-key-here",
+      "culture": "it-it"
+    }
+  }
+}
