@@ -6,11 +6,18 @@ GWA is a simple easy to use web application which aims to provide a straightforw
 GWA is built atop [OpenLayers](https://openlayers.org/) and [Vue](https://vuejs.org/) using [Vuetify](https://vuetifyjs.com/en/) and [Vuelayers](https://vuelayers.github.io/#/) as components libraries.
 
 
-1. [Installation](#installation)
-2. [Config](#config)
+- [Installation](#installation)
+- [Project Config](#config)
+    - [View](#view)
+    - [Servers](#servers)
+    - [Layers](#layers)
+    - [Group Layers](#grouplayers)
+    - [Base Maps](#basemaps)
+    - [Example](#full-valid-config-example)
+3. [Geoserver Config](#geoserver)
 
 ## Installation
-
+ 
 ```
 cd /your/webServer/documentRoot
 sudo git clone https://github.com/bnza/gwa.git projectName
@@ -109,7 +116,7 @@ A list of Geoserver's servers. MUST contain at least one server
 
 #### server
 
-An object containing the following keys
+An object containing the Geoserver server configuration data.
 
 ##### name
 
@@ -123,7 +130,6 @@ The server identifier. MUST be unique
 
 The fully qualified Geoserver' base URL 
 
-- **Required**
 
 ```json
 "servers": [
@@ -138,6 +144,213 @@ The fully qualified Geoserver' base URL
 ```
 
 ### layers
+
+An array of valid layers object. This group of layers will be shown as "root" layers (they won't belong to any layer group)
+
+- *Optional*
+- *Type*: `layer[]`
+
+#### layer
+
+An object containing the following keys
+
+#### type
+The layer's service type. Valid values are: `wfs`, `wms`, `wmts` which refers to the supported services names
+
+- **Required**
+- *Type*: `string`
+
+#### name
+
+The [layer](https://docs.geoserver.org/stable/en/user/data/webadmin/layers.html) name prepended by the [workspace](https://docs.geoserver.org/stable/en/user/data/webadmin/workspaces.html) identifier separated by a comma e.g. `topp:state`
+
+- **Required**
+- *Type*: `string`
+
+#### label
+
+The displayed layer label. When not set default to the `name` property value
+
+- *Optional*
+- *Type:* `string`
+- *Default:* `name` property value
+
+
+```json
+    {
+      "type": "wms",
+      "name": "nurc:mosaic"
+    }
+```
+`wfs` layers, which represent vector data, own a further `style` property
+
+#### style
+ 
+An object which contains display style for the vector data. Valid keys are:
+
+#### stroke 
+
+Stroke display style. Valid keys are:
+
+#### color
+
+Hexadecimal string value without `#`
+
+- *Optional*
+- *Type:* `string`
+- *Default:* `3399CC`
+
+#### width
+
+Width of the stroke in pixels
+
+- *Optional*
+- *Type:* `number`
+- *Default:* `1.25`
+
+```json
+{
+  "color": "AF5733",
+  "width": 3
+}
+```
+
+#### fill
+
+Color of the point/polygon filling. Valid keys are:
+
+#### color (see [above](#color))
+
+#### opacity
+
+Fill color opacity. Valid values are number between 0 and 1 
+
+- *Optional*
+- *Type:* `number`
+- *Default:* `0.4`
+
+```json
+{
+  "color": "BB33FF",
+  "opacity": 0.4
+}
+```
+
+#### image
+
+The image key is used to represent points symbols. Circles required just the radius property to be set
+
+#### radius
+
+- *Optional*
+- *Type:* `number`
+- *Default:* `3`
+
+#### circle style config example (with default fill/stroke)
+```json
+"style": {
+  "image": {
+    "radius": 4
+  }
+}
+```
+
+In order to display regular shapes you must provide at least the number of vertices using the `points` property
+
+#### points
+
+- *Optional*
+- *Type:* `number`
+- *Default:* `4`
+
+
+#### regular shape style config example (with custom fill/stroke)
+```json
+"style": {
+  "stroke": {
+    "color": "AF5733",
+    "width": 3
+  },
+  "fill": {
+    "color": "BB33FF",
+    "opacity": 0.4
+  },
+  "image": {
+    "radius": 4,
+    "points": 4
+  }
+}
+```
+
+### groupLayers
+
+An array of group layer object
+
+#### groupLayer
+
+An object containing the following keys
+
+#### name
+
+The group layer name. Must be unique
+
+- **Required**
+- *Type*: `string`
+
+#### label
+
+The displayed group layer label
+
+- *Optional*
+- *Type:* `string`
+- *Default:* `name` property value
+
+#### layers
+
+An array of valid [layer objects](#layer)
+
+- **Required**
+- *Type*: `layer[]`
+
+### baseMaps
+
+An object containing the following keys:
+
+#### active
+
+The active basemap layer. Valid values are: `osm` and `bing`
+
+- *Optional*
+- *Type:* `string`
+- *Default:* `osm`
+
+#### osm
+
+Defines the [Open Street Map](https://www.openstreetmap.org/) base map layer presence in the project
+
+- *Optional*
+- *Type:* `boolean`
+- *Default:* `true`
+
+#### bing
+
+[Bing Maps](https://www.microsoft.com/en-us/maps) configuration data. An object containing the following keys:
+
+
+#### apiKey
+
+Bing API key
+
+- **Required**
+- *Type*: `string`
+
+#### culture
+
+Bing API [culture](https://docs.microsoft.com/en-us/bingmaps/rest-services/common-parameters-and-types/culture-parameter) parameter
+- *Optional*
+- *Type:* `string`
+- *Default:* `en-US`
+
 
 ### Full valid config example
 
@@ -199,7 +412,21 @@ The fully qualified Geoserver' base URL
       "layers": [
         {
           "type": "wfs",
-          "name": "tiger:poi"
+          "name": "tiger:poi",
+          "style": {
+            "stroke": {
+              "color": "AF5733",
+              "width": 3
+            },
+            "fill": {
+              "color": "BB33FF",
+              "opacity": 0.4
+            },
+            "image": {
+              "radius": 4,
+              "points": 4
+            }
+          }
         },
         {
           "type": "wfs",
@@ -219,7 +446,7 @@ The fully qualified Geoserver' base URL
 }
 ```
 
-### Geoserver
+## Geoserver
 
 If your application URL is outside your server domain, in order to avoid [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) related security errors you must set up your server accordingly:
 
