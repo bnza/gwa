@@ -1,5 +1,5 @@
 <template>
-  <div class="miao">
+  <div>
     <features-data-table-headers :type="type" :headers.sync="headers" />
     <v-data-table
       :headers="headers"

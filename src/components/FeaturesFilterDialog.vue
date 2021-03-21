@@ -59,7 +59,8 @@
       <v-card-actions>
         <v-btn text outlined @click="close">Cancel</v-btn>
         <v-spacer />
-        <v-btn text outlined color="primary" @click="submit" :disabled="!filters.length">Submit</v-btn>
+        <v-btn text outlined color="primary" @click="clear" :disabled="!filters.length">Clear</v-btn>
+        <v-btn text outlined color="primary" @click="submit">Submit</v-btn>
       </v-card-actions>
     </v-card>
     <features-filter-edit-dialog
@@ -145,12 +146,19 @@ export default {
         Vue.set(this.filters, this.activeFilterIndex, filter)
       }
     },
+    emit () {
+      const options = mergeRight(this.dataOptions, { filter: this.filters })
+      this.$emit('update:dataOptions', options)
+    },
     close () {
       this.dialog = false
     },
+    clear () {
+      this.filters = []
+      this.emit()
+    },
     submit () {
-      const options = mergeRight(this.dataOptions, { filter: this.filters })
-      this.$emit('update:dataOptions', options)
+      this.emit()
       this.close()
       this.filters = []
     }

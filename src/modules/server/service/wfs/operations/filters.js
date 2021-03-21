@@ -41,6 +41,26 @@ export const operators = [
     options: [CASE_SENSITIVE],
     parseExpressions: filter => filter,
     validate: filter => !!filter.propertyName && !!filter.expressions.length
+  },
+  {
+    text: 'less than',
+    filter: olFilters.lessThan,
+    types: ['number'],
+    cardinality: 1,
+    tagName: 'PropertyIsLessThan',
+    options: [],
+    parseExpressions: filter => filter,
+    validate: filter => !!filter.propertyName && !!filter.expressions.length
+  },
+  {
+    text: 'greater than',
+    filter: olFilters.greaterThan,
+    types: ['number'],
+    cardinality: 1,
+    tagName: 'PropertyIsGreaterThan',
+    options: [],
+    parseExpressions: filter => filter,
+    validate: filter => !!filter.propertyName && !!filter.expressions.length
   }
 ]
 
