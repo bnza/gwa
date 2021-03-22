@@ -59,7 +59,6 @@
       <v-list-item v-if="propertyType.isJust()" >
         <v-list-item-content>
           <v-switch class="ml-3" v-model="filterObject.negate" hint="not" persistent-hint/>
-<!--          <features-filter-operators-select :property-type="propertyType.just()" :operators.sync="operators"/>-->
           <v-select
             v-model="filterObject.operator"
             v-if="operators.length"
@@ -83,7 +82,6 @@ import { filter, map, includes, find, propEq, clone } from 'ramda'
 import { Maybe } from 'monet'
 import { GeometrySupportedTypes } from '@/common/constants'
 import { operators as queryOperators } from '@/modules/server/service/wfs/operations/filters'
-// import FeaturesFilterOperatorsSelect from '@/components/FeaturesFilterOperatorsSelect'
 
 const defaultFilter = () => {
   return {
@@ -96,11 +94,9 @@ const defaultFilter = () => {
 
 export default {
   name: 'FeaturesFilterEditDialog',
-  // components: { FeaturesFilterOperatorsSelect },
   data () {
     return {
       filterObject: null
-      // operators: []
     }
   },
   props: {
