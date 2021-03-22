@@ -26,14 +26,15 @@
         </span>  {{config.label}}</v-list-item-title>
     </v-list-item-content>
     <v-list-item-action>
-      <drawer-layer-list-tile-actions-menu :id="config.id" :ready="info.isRight()" />
+      <drawer-layer-list-tile-actions-menu @show-layer-info="showLayerInfo" :id="config.id" :ready="info.isRight()" />
     </v-list-item-action>
   </v-list-item>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { Services } from '@/common/constants'
+import { SET_ACTIVE_SHOW_LAYER_ID } from '@/store/components/AppDrawerLayersList'
 import LayerMx from '@/mixins/LayerMx'
 import DrawerLayerListTileActionsMenu from '@/components/DrawerLayerListTileActionsMenu'
 
@@ -66,6 +67,14 @@ export default {
           icon = 'photo'
       }
       return icon
+    }
+  },
+  methods: {
+    ...mapMutations('components/AppDrawerLayersList', [
+      SET_ACTIVE_SHOW_LAYER_ID
+    ]),
+    showLayerInfo () {
+      this[SET_ACTIVE_SHOW_LAYER_ID](this.config.id)
     }
   }
 }

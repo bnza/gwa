@@ -1,3 +1,4 @@
+import AppDrawerLayersList from '@/store/components/AppDrawerLayersList'
 import AppMap from '@/store/components/AppMap'
 import AppNavigationDrawer from './AppNavigationDrawer'
 
@@ -16,6 +17,7 @@ export default {
   namespaced: true,
   state,
   modules: {
+    AppDrawerLayersList,
     AppMap,
     AppNavigationDrawer
   }

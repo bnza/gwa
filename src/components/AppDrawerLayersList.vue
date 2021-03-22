@@ -22,6 +22,7 @@
       </v-list-group>
       <drawer-base-maps-list />
     </v-list>
+    <layer-info-dialog />
   </v-card>
 </template>
 
@@ -30,13 +31,15 @@ import { mapGetters } from 'vuex'
 import LayersStoreMx from '@/mixins/LayersStoreMx'
 import DrawerLayerListTile from '@/components/DrawerLayerListTile'
 import DrawerBaseMapsList from '@/components/DrawerBaseMapsList'
+import LayerInfoDialog from '@/components/LayerInfoDialog'
 
 export default {
   name: 'AppDrawerLayersList',
   mixins: [LayersStoreMx],
   components: {
     DrawerLayerListTile,
-    DrawerBaseMapsList
+    DrawerBaseMapsList,
+    LayerInfoDialog
   },
   computed: {
     ...mapGetters('config', ['groupLayers']),

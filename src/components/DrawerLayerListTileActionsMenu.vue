@@ -15,9 +15,9 @@
         <v-list-item link>
           <v-list-item-title @click="fitLayer" class="font-weight-light">Zoom to layer</v-list-item-title>
         </v-list-item>
-<!--        <v-list-item link>
-          <v-list-item-title class="font-weight-light">Show layer info</v-list-item-title>
-        </v-list-item>-->
+        <v-list-item link>
+          <v-list-item-title @click="showLayerInfo" class="font-weight-light">Show layer info</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-menu>
   </div>
@@ -40,6 +40,9 @@ export default {
   methods: {
     fitLayer () {
       this.$store.dispatch('view/fitLayer', { id: this.id })
+    },
+    showLayerInfo () {
+      this.$emit('show-layer-info')
     }
   }
 }
