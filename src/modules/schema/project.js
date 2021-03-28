@@ -77,6 +77,19 @@ const serverMustExistConstraint = {
     )
 }
 
+const _layerSchema = Joi.alternatives().conditional('.type', [
+  { is: 'wfs', then: wfsLayerSchema.append(serverMustExistConstraint) },
+  { is: 'wms', then: wmsLayerSchema.append(serverMustExistConstraint) },
+  {
+    is: 'wmts',
+    then: wmtsLayerSchema.append(serverMustExistConstraint),
+    otherwise: Joi.object(
+      {
+        type: Joi.string().required().valid('wfs', 'wms', 'wmts')
+      }).unknown()
+  }
+])
+
 const groupNameReferenceConstraint = {
   group: Joi.string().default(Joi.ref('....name'))
 }
@@ -87,18 +100,27 @@ const groupNameReferenceConstraint = {
  */
 const projectLayersSchema = Joi.array()
   .items(
-    wfsLayerSchema.append(serverMustExistConstraint),
-    wmsLayerSchema.append(serverMustExistConstraint),
-    wmtsLayerSchema.append(serverMustExistConstraint)
+    _layerSchema
   )
   .unique('id')
   .min(1)
 
+const _groupedLayerSchema = Joi.alternatives().conditional('.type', [
+  { is: 'wfs', then: wfsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint)) },
+  { is: 'wms', then: wmsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint)) },
+  {
+    is: 'wmts',
+    then: wmtsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint)),
+    otherwise: Joi.object(
+      {
+        type: Joi.string().required().valid('wfs', 'wms', 'wmts')
+      }).unknown()
+  }
+])
+
 const projectGroupedLayersSchema = Joi.array()
   .items(
-    wfsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint)),
-    wmsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint)),
-    wmtsLayerSchema.append(mergeRight(serverMustExistConstraint, groupNameReferenceConstraint))
+    _groupedLayerSchema
   )
   .unique('id')
   .min(1)

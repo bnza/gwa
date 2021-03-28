@@ -42,5 +42,11 @@ export const styleRegularShapeImageSchema = styleImageVectorStyleSchema.append({
 export const styleSchema = Joi.object({
   fill: styleFillSchema.default(),
   stroke: styleStrokeSchema.default(),
-  image: Joi.alternatives().try(styleCircleImageSchema, styleRegularShapeImageSchema)
+  image: Joi.alternatives().conditional('.radius2',
+    {
+      is: Joi.number(),
+      then: styleRegularShapeImageSchema,
+      otherwise: styleCircleImageSchema
+    }
+  )
 })
