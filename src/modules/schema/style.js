@@ -26,10 +26,13 @@ export const styleCircleImageSchema = styleImageVectorStyleSchema.append({})
 export const styleRegularShapeImageSchema = styleImageVectorStyleSchema.append({
   points: Joi.number()
     .integer()
-    .min(3)
-    .default(4),
-  angle: Joi.number()
-    .default(0),
+    .min(3),
+  rotation: Joi.number()
+    .default(0)
+    .min(-360)
+    .max(360)
+    .unit('degrees')
+    .custom(value => value / 180 * Math.PI),
   radius2: Joi.number()
     .integer()
     .min(
@@ -38,8 +41,7 @@ export const styleRegularShapeImageSchema = styleImageVectorStyleSchema.append({
       })
     )
 })
-
-export const styleSchema = Joi.object({
+export const symbologySchema = Joi.object({
   fill: styleFillSchema.default(),
   stroke: styleStrokeSchema.default(),
   image: Joi.alternatives().conditional('.radius2',
@@ -49,4 +51,9 @@ export const styleSchema = Joi.object({
       otherwise: styleCircleImageSchema
     }
   )
+})
+
+export const styleSchema = Joi.object({
+  type: Joi.string().valid('simple', 'categorized', 'graduated').default('simple'),
+  symbology: symbologySchema.required()
 })
