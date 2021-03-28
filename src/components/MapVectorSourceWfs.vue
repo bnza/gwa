@@ -97,9 +97,11 @@ export default {
       immediate: true
     },
     filters: {
-      handler: function (filters, old) {
-        this.$refs.vlSource.clear()
-        this.$refs.vlSource.wrapLoaderFunc(this.loader)(...this.loaderParams)
+      handler: function (filters, oldFilters) {
+        if (filters !== oldFilters) {
+          this.$refs.vlSource.clear()
+          this.$refs.vlSource.wrapLoaderFunc(this.loader)(...this.loaderParams)
+        }
       }
     }
   },

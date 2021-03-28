@@ -81,7 +81,7 @@ import Vue from 'vue'
 import FeaturesFilterDeleteDialog from '@/components/FeaturesFilterDeleteDialog'
 import FeaturesFilterEditDialog from '@/components/FeaturesFilterEditDialog'
 import FeaturesFilterPredicateListItem from '@/components/FeaturesFilterPredicateListItem'
-import { mergeRight } from 'ramda'
+import { mergeRight, clone } from 'ramda'
 
 export default {
   name: 'FeaturesFilterDialog',
@@ -166,7 +166,7 @@ export default {
   watch: {
     dataOptions: {
       handler: function (data) {
-        this.filters = data.filter
+        this.filters = clone(data.filter)
       },
       immediate: true
     }
