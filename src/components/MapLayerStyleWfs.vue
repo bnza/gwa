@@ -1,5 +1,5 @@
 <template>
-  <vl-style-func :func="styleFn" />
+  <vl-style-func :function="styleFn" />
 </template>
 
 <script>
