@@ -185,8 +185,33 @@ The displayed layer label. When not set default to the `name` property value
 `wfs` layers, which represent vector data, own a further `style` property
 
 #### style
- 
-An object which contains display style for the vector data. Valid keys are:
+
+#### symbology
+
+An object which contains display style for the vector data.
+
+```json
+    "style": {
+      "symbology": {
+          "stroke": {
+            "color": "FF8C00",
+            "width": 3
+          },
+          "fill": {
+            "color": "FF8C00",
+            "opacity": 0.4
+          },
+          "image": {
+            "radius": 4,
+            "points": 4,
+            "rotation": -45
+          } 
+      }
+    }
+```
+
+Valid keys are:
+
 
 #### stroke 
 
@@ -239,6 +264,7 @@ Fill color opacity. Valid values are number between 0 and 1
 #### image
 
 The image key is used to represent points symbols. Circles required just the radius property to be set
+**Be careful! Image property MUST be used only with Point/MultiPoint geometries**
 
 #### radius
 
@@ -265,8 +291,9 @@ In order to display regular shapes you must provide at least the number of verti
 
 
 #### regular shape style config example (with custom fill/stroke)
+**Be careful! Image property MUST be used only with Point/MultiPoint geometries**
 ```json
-"style": {
+"symbology": {
   "stroke": {
     "color": "AF5733",
     "width": 3
@@ -387,12 +414,14 @@ Bing API [culture](https://docs.microsoft.com/en-us/bingmaps/rest-services/commo
       "type": "wfs",
       "name": "topp:states",
       "style": {
-        "stroke": {
-          "color": "BBBBBB",
-          "width": 9
-        },
-        "fill": {
-          "color": "AAAAAA"
+        "symbology": {
+          "stroke": {
+            "color": "BBBBBB",
+            "width": 9
+          },
+          "fill": {
+            "color": "AAAAAA"
+          }
         }
       }
     },
@@ -414,17 +443,19 @@ Bing API [culture](https://docs.microsoft.com/en-us/bingmaps/rest-services/commo
           "type": "wfs",
           "name": "tiger:poi",
           "style": {
-            "stroke": {
-              "color": "AF5733",
-              "width": 3
-            },
-            "fill": {
-              "color": "BB33FF",
-              "opacity": 0.4
-            },
-            "image": {
-              "radius": 4,
-              "points": 4
+            "symbology": {
+              "stroke": {
+                "color": "AF5733",
+                "width": 3
+              },
+              "fill": {
+                "color": "BB33FF",
+                "opacity": 0.4
+              },
+              "image": {
+                "radius": 4,
+                "points": 4
+              }
             }
           }
         },
