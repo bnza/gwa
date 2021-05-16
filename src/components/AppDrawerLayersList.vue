@@ -9,7 +9,6 @@
       <v-list-group
         v-for="group in groupLayers"
         :key="group.id"
-        :value="true"
       >
         <template v-slot:activator>
           <v-list-item-title>{{ group.label }}</v-list-item-title>
