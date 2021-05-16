@@ -16,7 +16,7 @@
     />
     <map-base-maps :state="$store.state.baseMaps" />
     <map-layer-group
-      v-for="group in groupLayers"
+      v-for="group in reversedGroupLayers"
       :key="group.id"
       :id="group.name"
       :name="group.name"
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { reverse } from 'ramda'
 import { mapState, mapGetters } from 'vuex'
 import { getMapIntPixelHeight } from '@/modules/utils'
 import ProjectConfigMx from '@/mixins/ProjectConfigMx'
@@ -64,7 +65,10 @@ export default {
     }),
     ...mapGetters('config', [
       'groupLayers'
-    ])
+    ]),
+    reversedGroupLayers () {
+      return reverse(this.groupLayers)
+    }
   },
   methods: {
     onResize () {
