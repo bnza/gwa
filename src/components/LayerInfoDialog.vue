@@ -40,7 +40,7 @@
           Attributes
         </v-tab>
         <v-tab-item>
-          <v-card class="ma-2" flat>
+          <v-card class="ma-4" flat>
             <v-form>
               <v-container>
                 <v-row>
@@ -80,7 +80,7 @@
           </v-card>
         </v-tab-item>
         <v-tab-item v-if="info.projection">
-          <v-card class="ma-2" flat>
+          <v-card class="ma-4" flat>
             <v-form>
               <v-container>
                 <v-row>
@@ -96,7 +96,7 @@
           </v-card>
         </v-tab-item>
         <v-tab-item v-if="config.type === 'wfs'">
-          <v-card class="ma-2" flat>
+          <v-card class="ma-4" flat>
             <v-form>
               <v-container>
                 <v-data-table
