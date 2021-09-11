@@ -29,8 +29,8 @@ export default {
    * @param {LayerConfigObject} layerConfig
    */
   loadLayer ({ commit, dispatch, rootGetters }, layerConfig) {
-    commit(LayerMutations.INCREMENT_LOADED_LAYERS)
     return fetchFeatureType({ dispatch, rootGetters }, layerConfig).then(featureType => {
+      commit(LayerMutations.INCREMENT_LOADED_LAYERS)
       if (layerConfig.type === Services.wfs) {
         commit(LayerMutations.SET_FEATURE_TYPE, {
           id: layerConfig.id,
@@ -49,7 +49,7 @@ export default {
         }
       }), getters.configs)
   },
-  loadConfigLayers ({ commit, dispatch, getters }) {
+  loadConfigLayers ({ dispatch, getters }) {
     return Promise.all(map(layerConfig => dispatch('loadLayer', layerConfig), getters.configs))
   }
 }
