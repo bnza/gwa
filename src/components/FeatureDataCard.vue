@@ -7,7 +7,24 @@
   </v-card>
   <v-card v-else flat>
     <layer-card-title-tooltip :label="config.label" :title="featureType.title" />
-    <v-card-subtitle>{{ selectedFeature.feature.id }}</v-card-subtitle>
+    <v-card-subtitle>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            x-small
+            icon
+            color="teal"
+            v-bind="attrs"
+            v-on="on"
+            @click="fitViewExtent(selectedFeature.feature)"
+          >
+            <v-icon>center_focus_strong</v-icon>
+          </v-btn>
+        </template>
+        <span>Zoom to feature</span>
+      </v-tooltip>
+      {{ selectedFeature.feature.id }}
+    </v-card-subtitle>
     <v-form readonly :style="cssVars">
       <v-container>
         <v-row v-for="(value, name) in selectedFeature.feature.properties" :key="name" justify="center">
@@ -26,11 +43,14 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import { VTextarea, VTextField } from 'vuetify/lib'
 import { Either } from 'monet'
 import { getFormIntPixelHeight } from '@/modules/utils'
 import LayerCardTitleTooltip from '@/components/LayerCardTitleTooltip'
+import { ViewMutations } from '@/common/constants/mutations'
+import { GeoJSON } from 'ol/format'
+import { clone } from 'ramda'
 
 export default {
   name: 'FeatureDataCard',
@@ -64,6 +84,14 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('view', {
+      setViewExtent: ViewMutations.SET_EXTENT
+    }),
+    fitViewExtent (geoJsonFeature) {
+      const feature = (new GeoJSON()).readFeature(geoJsonFeature)
+      const geom = clone(feature.getGeometry())
+      this.setViewExtent([geom])
+    },
     findPropertyType (name) {
       return this.featureType.properties.find(property => property.name === name)
     },
