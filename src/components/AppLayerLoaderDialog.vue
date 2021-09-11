@@ -6,15 +6,14 @@
       max-width="290"
     >
       <v-card>
-        <v-card-title>Layers loading progress</v-card-title>
+        <v-card-title color="primary">Layers loading progress</v-card-title>
         <v-card-text>
           <v-row justify="center">
-          {{this.loaded}} / {{this.total}}
           <v-progress-linear
           :value="percent"
           height="25"
         >
-          <strong>{{ this.percent }}%</strong>
+          <strong>{{this.loaded}}/{{this.total}}</strong>
           </v-progress-linear>
           </v-row>
         </v-card-text>
@@ -41,7 +40,7 @@ export default {
       return Object.keys(this.layers).length
     },
     percent: function () {
-      return Math.round((this.loaded / this.total + Number.EPSILON) * 100) / 100
+      return Math.round((this.loaded / this.total + Number.EPSILON) * 100)
     }
   }
 }
