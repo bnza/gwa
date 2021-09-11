@@ -37,6 +37,7 @@ export const LayersQueryMutations = Object.freeze({
   SET_PARAMETERS
 })
 
+export const INCREMENT_LOADED_LAYERS = 'incrementLoadedLayers'
 export const SET_LAYER_STATE = 'setLayerState'
 export const SET_PROP = 'setProp'
 export const TOGGLE_PROP = 'toggleProp'
@@ -53,7 +54,8 @@ export const LayerMutations = Object.freeze({
   SET_ACTIVE,
   SET_FEATURE_TYPE,
   SET_SELECTED_FEATURE,
-  CLEAR_SELECTED_FEATURE
+  CLEAR_SELECTED_FEATURE,
+  INCREMENT_LOADED_LAYERS
 })
 
 export const SET_EXTENT = 'setExtent'

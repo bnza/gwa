@@ -5,6 +5,12 @@ import { registerProjection } from '@/modules/projections'
 
 export default {
   name: 'AppConfigManager',
+  props: {
+    layerLoading: {
+      type: Boolean,
+      required: true
+    }
+  },
   computed: {
     ...mapState('config', { config: 'valid' }),
     ...mapGetters('server/capabilities', ['unloadedServerCapabilities'])
@@ -18,7 +24,8 @@ export default {
       () => {
         this.$store.dispatch(('layers/setLayersStates'))
         this.$emit('layersSet')
-        this.$store.dispatch('layers/loadConfigLayers')
+        this.$emit('update:layerLoading', true)
+        this.$store.dispatch('layers/loadConfigLayers').then(() => this.$emit('update:layerLoading', false))
       }
     )
   }

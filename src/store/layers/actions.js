@@ -28,14 +28,16 @@ export default {
    * @param rootGetters
    * @param {LayerConfigObject} layerConfig
    */
-  async loadLayer ({ commit, dispatch, rootGetters }, layerConfig) {
-    const featureType = await fetchFeatureType({ dispatch, rootGetters }, layerConfig)
-    if (layerConfig.type === Services.wfs) {
-      commit(LayerMutations.SET_FEATURE_TYPE, {
-        id: layerConfig.id,
-        featureType
-      })
-    }
+  loadLayer ({ commit, dispatch, rootGetters }, layerConfig) {
+    commit(LayerMutations.INCREMENT_LOADED_LAYERS)
+    return fetchFeatureType({ dispatch, rootGetters }, layerConfig).then(featureType => {
+      if (layerConfig.type === Services.wfs) {
+        commit(LayerMutations.SET_FEATURE_TYPE, {
+          id: layerConfig.id,
+          featureType
+        })
+      }
+    })
   },
   setLayersStates ({ commit, getters }) {
     forEach(layerConfig => commit(

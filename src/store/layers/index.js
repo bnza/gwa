@@ -22,6 +22,7 @@ import query from './query'
  * @type {LayersVuexState}
  */
 const state = {
+  loaded: 0,
   states: {},
   featureTypes: {},
   active: null,

@@ -12,6 +12,9 @@ export default {
   [LayerMutations.SET_LAYER_STATE] (state, { id, layerState }) {
     Vue.set(state.states, id, layerState)
   },
+  [LayerMutations.INCREMENT_LOADED_LAYERS] (state) {
+    Vue.set(state, 'loaded', state.loaded + 1)
+  },
   [LayerMutations.SET_FEATURE_TYPE] (state, { id, featureType }) {
     Vue.set(state.featureTypes, id, featureType)
   },
