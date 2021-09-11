@@ -10,7 +10,7 @@
       ref="view"
       :projection="dataProjection"
       :maxZoom="viewConfig.maxZoom"
-      :minZoom="viewConfig.minzoom"
+      :minZoom="viewConfig.minZoom"
       :extent="extent"
       :zoom.sync="zoom"
       :center.sync="center"
