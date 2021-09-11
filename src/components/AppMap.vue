@@ -9,6 +9,8 @@
     <vl-view
       ref="view"
       :projection="dataProjection"
+      :maxZoom="viewConfig.maxZoom"
+      :minZoom="viewConfig.minzoom"
       :extent="extent"
       :zoom.sync="zoom"
       :center.sync="center"
@@ -57,6 +59,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('config', {
+      config: 'valid'
+    }),
     ...mapState('view', {
       fitExtent: 'extent'
     }),
@@ -68,6 +73,9 @@ export default {
     ]),
     reversedGroupLayers () {
       return reverse(this.groupLayers)
+    },
+    viewConfig () {
+      return this.config.view
     }
   },
   methods: {

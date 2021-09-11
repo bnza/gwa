@@ -213,6 +213,8 @@ export const viewSchema = Joi.object({
   projection: Joi.string()
     .default('EPSG:3857')
     .regex(/^EPSG:\d+/),
+  maxZoom: Joi.number().max(28).min(0).default(28),
+  minZoom: Joi.number().max(28).min(0).default(0),
   extent: extentSchema
 })
 
