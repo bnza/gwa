@@ -1,11 +1,11 @@
 <template>
   <div>
-    <app-config-manager @layersSet="layersSet=true" :layerLoading.sync="layerLoading"/>
+    <app-config-manager @layersSet="layersSet=true" :layersLoading.sync="layersLoading"/>
     <app-bar />
-    <app-layer-loader-dialog :value="layerLoading" />
+    <app-layer-loader-dialog :value="layersLoading" />
     <app-navigation-drawer :layers-set="layersSet"/>
       <v-main>
-        <app-map />
+        <app-map :layersReady="layersReady"/>
       </v-main>
     <app-footer />
   </div>
@@ -25,7 +25,12 @@ export default {
   data () {
     return {
       layersSet: false,
-      layerLoading: false
+      layersLoading: false
+    }
+  },
+  computed: {
+    layersReady () {
+      return this.layersSet && !this.layersLoading
     }
   }
 }

@@ -3,11 +3,11 @@ import { LayerMutations } from '@/common/constants/mutations'
 import DescribeFeatureType from '@/modules/server/service/wfs/operations/DescribeFeatureType'
 import { Services } from '@/common/constants'
 
-const fetchFeatureType = async ({ dispatch, rootGetters }, layerConfig) => {
+const fetchFeatureType = ({ dispatch, rootGetters }, layerConfig) => {
   const server = rootGetters['config/getServer'](layerConfig.server)
   const featureType = rootGetters['server/capabilities/getFeatureType'](layerConfig.server, layerConfig.name)
-  const fetchFeatureType = async () => await dispatch(
-    'client/fetch',
+  const fetchFeatureType = () => (dispatch(
+    'client/fetchPromise',
     DescribeFeatureType.getRequestConfig(
       server,
       {
@@ -16,8 +16,11 @@ const fetchFeatureType = async ({ dispatch, rootGetters }, layerConfig) => {
       }
     ),
     { root: true }
+  )).then(e => e.map(DescribeFeatureType.normalizeResponse))
+  return featureType.cata(
+    e => Promise.resolve(e),
+    fetchFeatureType
   )
-  return (await featureType.flatMap(fetchFeatureType)).map(DescribeFeatureType.normalizeResponse)
 }
 
 export default {
@@ -29,7 +32,8 @@ export default {
    * @param {LayerConfigObject} layerConfig
    */
   loadLayer ({ commit, dispatch, rootGetters }, layerConfig) {
-    return fetchFeatureType({ dispatch, rootGetters }, layerConfig).then(featureType => {
+    const a = fetchFeatureType({ dispatch, rootGetters }, layerConfig)
+    return a.then(featureType => {
       commit(LayerMutations.INCREMENT_LOADED_LAYERS)
       if (layerConfig.type === Services.wfs) {
         commit(LayerMutations.SET_FEATURE_TYPE, {

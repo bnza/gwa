@@ -6,7 +6,7 @@ import { registerProjection } from '@/modules/projections'
 export default {
   name: 'AppConfigManager',
   props: {
-    layerLoading: {
+    layersLoading: {
       type: Boolean,
       required: true
     }
@@ -24,8 +24,8 @@ export default {
       () => {
         this.$store.dispatch(('layers/setLayersStates'))
         this.$emit('layersSet')
-        this.$emit('update:layerLoading', true)
-        this.$store.dispatch('layers/loadConfigLayers').then(() => this.$emit('update:layerLoading', false))
+        this.$emit('update:layersLoading', true)
+        this.$store.dispatch('layers/loadConfigLayers').then(() => this.$emit('update:layersLoading', false))
       }
     )
   }

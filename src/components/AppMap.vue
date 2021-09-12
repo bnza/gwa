@@ -17,13 +17,15 @@
       :rotation.sync="rotation"
     />
     <map-base-maps :state="$store.state.baseMaps" />
-    <map-layer-group
-      v-for="group in reversedGroupLayers"
-      :key="group.id"
-      :id="group.name"
-      :name="group.name"
+    <template v-if="layersReady">
+      <map-layer-group
+        v-for="group in reversedGroupLayers"
+        :key="group.id"
+        :id="group.name"
+        :name="group.name"
       />
-    <map-layer-group id="default" />
+    </template>
+    <map-layer-group v-if="layersReady" id="default" />
     <map-layer-interaction-select-wfs v-if="activeLayer" :active-layer="activeLayer" @select="setSelectedFeature"/>
   </vl-map>
 </template>
@@ -56,6 +58,12 @@ export default {
       center: [0, 0],
       rotation: 0,
       extent: null
+    }
+  },
+  props: {
+    layersReady: {
+      type: Boolean,
+      required: true
     }
   },
   computed: {

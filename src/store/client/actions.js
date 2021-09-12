@@ -1,7 +1,8 @@
 import axios from 'axios'
-import { Either } from 'monet'
+import { Either, Left, Right } from 'monet'
 import { prop } from 'ramda'
 import { ClientMutations } from '@/common/constants/mutations'
+import { error } from 'vuelayers/dist/utils'
 
 /**
  * @typedef {import('axios').AxiosResponse} AxiosResponse
@@ -24,6 +25,15 @@ export const request = async ({ commit }, config) => {
   )
 }
 
+export const requestPromise = ({ commit }, config) => {
+  const key = Symbol('request')
+  commit(ClientMutations.SET_REQUEST_PENDING, key)
+  return axios.request(config)
+    .then(response => Right(response))
+    .catch(e => Left(error))
+    .finally(ClientMutations.SET_REQUEST_TERMINATED, key)
+}
+
 /**
  * @param commit
  * @param config
@@ -31,6 +41,12 @@ export const request = async ({ commit }, config) => {
  */
 export const fetch = async ({ commit }, config) => {
   return (await request({ commit }, config)).map(prop('data'))
+}
+
+export const fetchPromise = ({ commit }, config) => {
+  return requestPromise({ commit }, config).then(
+    either => either.map(prop('data'))
+  )
 }
 
 /**
@@ -59,5 +75,7 @@ const fetchConfig = async ({ commit }) => {
 export default {
   request,
   fetch,
-  fetchConfig
+  fetchConfig,
+  requestPromise,
+  fetchPromise
 }
