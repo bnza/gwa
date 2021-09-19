@@ -3,6 +3,7 @@
     :class="{ current: isActive }"
   >
     <v-list-item-action>
+      <!-- TODO check projection def failing -->
       <v-checkbox v-if="info.isRight()" v-model="visible"></v-checkbox>
       <v-tooltip v-else bottom>
         <template v-slot:activator="{ on, attrs }">

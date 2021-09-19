@@ -90,7 +90,8 @@ export default {
           return
         }
         if (!getProj(code)) {
-          await registerProjection({ code }, this.fetch)
+          this.projectionReady = await registerProjection({ code }, this.fetch)
+          return
         }
         this.projectionReady = true
       },

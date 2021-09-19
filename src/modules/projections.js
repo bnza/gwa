@@ -5,7 +5,7 @@ import proj4 from 'proj4'
 /**
  * @typedef {Object} Projection
  * @property {string} code
- * @property {string} def
+ * @property {string} [def]
  */
 
 /**
@@ -24,7 +24,7 @@ export const fetchProj4Def = async (request, code) => {
  *
  * @param {?Function} request
  * @param {Projection} projection
- * @return {Promise<void>}
+ * @return {Promise<boolean>}
  */
 export const registerProjection = async ({ code, def }, request) => {
   if (!def) {
@@ -33,11 +33,16 @@ export const registerProjection = async ({ code, def }, request) => {
         'You must supply a proj4 definition string or a request function'
       )
     }
-    // TODO error handling
-    def = (await fetchProj4Def(request, code)).right()
+    const either = await fetchProj4Def(request, code)
+    either.map(d => {
+      proj4.defs(code, d)
+      register(proj4)
+    })
+    return either.isRight()
   }
   proj4.defs(code, def)
   register(proj4)
+  return true
 }
 
 export const transformWgs84Extent = (extent, destination) => {
