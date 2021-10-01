@@ -34,7 +34,7 @@ export const layerSchema = Joi.object({
   label: Joi.string().default(Joi.ref('name')),
   name: Joi.string()
     .required()
-    .regex(/^(\w+:)?\w+$/),
+    .regex(/^([\w-]+:)?[\w-]+$/),
   opacity: opacitySchema,
   server: Joi.string().default('default'),
   type: Joi.string()
