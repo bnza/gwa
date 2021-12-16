@@ -35,6 +35,12 @@ GWA uses a JSON config file `config.json` to retrieve required information such 
 The file is located inside the `config` folder and will be automatically copied in the web public directory after the build process.
 GWA uses [Joi](https://joi.dev/), which adheres strictly to JSON specification, as data validator, we suggest you to use a suitable text editor with syntax highlight capabilities. 
 
+Config file must reside inside the ```config``` directory. In order to publish changes you should run
+
+```
+yarn run config
+```
+
 The config file contains a valid JSON object with the following key:
 
 ### title
